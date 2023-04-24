@@ -1,16 +1,17 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:firebase_chat/fast_tools/widgets/h_line.dart';
-import 'package:firebase_chat/fast_tools/widgets/h_space.dart';
-import 'package:firebase_chat/fast_tools/widgets/padding_wrapper.dart';
-import 'package:firebase_chat/fast_tools/widgets/v_space.dart';
-import 'package:firebase_chat/features/theming/constants/sizes.dart';
-import 'package:firebase_chat/features/theming/constants/styles.dart';
-import 'package:firebase_chat/features/theming/theme_calls.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../fast_tools/widgets/button_wrapper.dart';
+import '../../../../fast_tools/widgets/h_space.dart';
+import '../../../../fast_tools/widgets/padding_wrapper.dart';
+import '../../../../fast_tools/widgets/v_space.dart';
+import '../../../theming/constants/sizes.dart';
+import '../../../theming/theme_calls.dart';
+import 'widgets/forget_password_button.dart';
+import 'widgets/login_button.dart';
 import 'widgets/login_form_text_filed.dart';
+import 'widgets/login_h_line.dart';
+import 'widgets/social_media_button.dart';
 
 class LoginScreen extends StatelessWidget {
   static const String routeName = '/LoginScreen';
@@ -86,127 +87,6 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class ForgetPasswordButton extends StatelessWidget {
-  const ForgetPasswordButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return PaddingWrapper(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          GestureDetector(
-            onTap: () {},
-            child: Text(
-              'Forgot password?',
-              style: h4TextStyle.copyWith(
-                color: colorTheme.kBlueColor,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class LoginButton extends StatelessWidget {
-  const LoginButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return PaddingWrapper(
-      child: ButtonWrapper(
-        onTap: () {},
-        padding: EdgeInsets.symmetric(
-          horizontal: kHPad,
-          vertical: kVPad / 2,
-        ),
-        backgroundColor: colorTheme.kBlueColor,
-        child: Text(
-          'Login',
-          style: h3LightTextStyle,
-        ),
-      ),
-    );
-  }
-}
-
-class LoginHLine extends StatelessWidget {
-  const LoginHLine({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return PaddingWrapper(
-      child: HLine(
-        color: colorTheme.kInactiveColor.withOpacity(.5),
-        thickness: .5,
-        alignment: Alignment.center,
-        overlay: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: kHPad / 2,
-          ),
-          color: colorTheme.backGround,
-          child: Text(
-            'Or',
-            style: h4TextStyleInactive,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class SocialMediaButton extends StatelessWidget {
-  final String iconPath;
-  final String title;
-
-  const SocialMediaButton({
-    super.key,
-    required this.iconPath,
-    required this.title,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ButtonWrapper(
-      onTap: () {},
-      alignment: Alignment.center,
-      backgroundColor: colorTheme.backGround,
-      padding: EdgeInsets.symmetric(
-        horizontal: kHPad,
-        vertical: kVPad / 2,
-      ),
-      border: Border.all(
-        color: colorTheme.kInactiveColor.withOpacity(.5),
-        width: 1,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            iconPath,
-            width: mediumIconSize,
-          ),
-          HSpace(factor: .5),
-          Text(
-            title,
-            style: h4TextStyle.copyWith(
-              color: colorTheme.activeText,
-            ),
-          ),
-        ],
       ),
     );
   }
