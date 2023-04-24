@@ -44,7 +44,7 @@ class _LoginFormTextFieldState extends State<LoginFormTextField> {
       textInputType: widget.inputType,
       password: widget.password,
       handleShowPassword: togglePasswordShown,
-      obscureText: !passwordShown,
+      obscureText: !passwordShown && widget.password,
       title: widget.hint,
       color: Colors.red,
       backgroundColor: colorTheme.textFieldBackgroundColor,

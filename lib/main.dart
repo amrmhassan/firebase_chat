@@ -2,6 +2,7 @@
 
 import 'package:firebase_chat/features/chat/presentation/screens/home_screen/home_screen.dart';
 import 'package:firebase_chat/features/login/presentation/pages/login_screen.dart';
+import 'package:firebase_chat/features/login/presentation/providers/login_provider.dart';
 import 'package:firebase_chat/features/theming/providers/theme_provider.dart';
 import 'package:firebase_chat/firebase_options.dart';
 import 'package:firebase_chat/init/initiators.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        ChangeNotifierProvider(create: (context) => LoginProvider()),
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
