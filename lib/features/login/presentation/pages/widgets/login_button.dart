@@ -1,5 +1,11 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
+import 'package:firebase_chat/core/errors/failure.dart';
+import 'package:firebase_chat/core/types.dart';
+import 'package:firebase_chat/features/login/domain/entities/user_entity.dart';
+import 'package:firebase_chat/features/login/domain/repositories/login_failures.dart';
+import 'package:firebase_chat/utils/global_utils.dart';
+import 'package:firebase_chat/utils/providers_calls.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../fast_tools/widgets/button_wrapper.dart';
@@ -17,7 +23,7 @@ class LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return PaddingWrapper(
       child: ButtonWrapper(
-        onTap: () {},
+        onTap: () => handleLogin(context),
         padding: EdgeInsets.symmetric(
           horizontal: kHPad,
           vertical: kVPad / 2,
@@ -29,5 +35,23 @@ class LoginButton extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void handleLogin(BuildContext context) async {
+    var res = await Providers.loginPf(context).login();
+    var data = res.fold((l) => l, (r) => r);
+    if (data is Failure) {
+      GlobalUtils.showSnackBar(
+        context: context,
+        message: ErrorMapper(data).map(),
+        snackBarType: SnackBarType.error,
+      );
+    } else if (data is UserEntity) {
+      GlobalUtils.showSnackBar(
+        context: context,
+        message: 'Logged in successfully',
+        snackBarType: SnackBarType.info,
+      );
+    }
   }
 }

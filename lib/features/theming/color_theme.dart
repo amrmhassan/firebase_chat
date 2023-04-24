@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'constants/colors.dart';

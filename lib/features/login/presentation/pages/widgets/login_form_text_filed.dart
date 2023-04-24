@@ -14,11 +14,13 @@ class LoginFormTextField extends StatefulWidget {
   final TextInputType? inputType;
   final bool password;
   final bool autoFocus;
+  final Function(String value) onChange;
 
   const LoginFormTextField({
     super.key,
     required this.hint,
     required this.iconPath,
+    required this.onChange,
     this.inputType,
     this.password = false,
     this.autoFocus = false,
@@ -39,6 +41,7 @@ class _LoginFormTextFieldState extends State<LoginFormTextField> {
   @override
   Widget build(BuildContext context) {
     return CustomTextField(
+      onChange: widget.onChange,
       autoFocus: widget.autoFocus,
       trailingIcon: passwordEye(),
       textInputType: widget.inputType,
