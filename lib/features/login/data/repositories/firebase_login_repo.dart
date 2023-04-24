@@ -22,6 +22,7 @@ class FirebaseLoginRepo implements LoginRepo {
         email: email,
         password: pass,
       );
+
       if (cred.user == null) {
         return Left(NoUserFailure());
       }

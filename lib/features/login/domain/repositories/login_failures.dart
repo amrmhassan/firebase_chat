@@ -7,3 +7,5 @@ class NoNetworkFailure implements Failure {}
 class WrongCredFailure implements Failure {}
 
 class NoUserFailure implements Failure {}
+
+class InvalidEmailFailure implements Failure {}

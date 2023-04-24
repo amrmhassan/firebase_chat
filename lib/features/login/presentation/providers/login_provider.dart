@@ -8,27 +8,22 @@ import 'package:firebase_chat/features/login/domain/usecases/login_usecase.dart'
 import 'package:flutter/material.dart';
 
 class LoginProvider extends ChangeNotifier {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+
   bool logging = false;
-  String? _email;
-  String? _pass;
-
-  void setEmail(String e) {
-    _email = e;
-    notifyListeners();
-  }
-
-  void setPassword(String p) {
-    _pass = p;
-    notifyListeners();
-  }
 
   Future<Either<Failure, UserEntity>> login() async {
-    if (_email == null || _pass == null) return Left(EmptyCredFailures());
+    String email = emailController.text;
+    String password = passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) return Left(EmptyCredFailures());
     logging = true;
     notifyListeners();
 
     var res = await LoginUseCase(FirebaseLoginRepo(FirebaseAuth.instance))
-        .call(_email!, _pass!);
+        .call(email, password);
 
     logging = false;
     notifyListeners();

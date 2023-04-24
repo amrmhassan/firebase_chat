@@ -3,7 +3,7 @@
 import 'package:firebase_chat/core/errors/failure.dart';
 import 'package:firebase_chat/core/types.dart';
 import 'package:firebase_chat/features/login/domain/entities/user_entity.dart';
-import 'package:firebase_chat/features/login/domain/repositories/login_failures.dart';
+import 'package:firebase_chat/init/initiators.dart';
 import 'package:firebase_chat/utils/global_utils.dart';
 import 'package:firebase_chat/utils/providers_calls.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +15,11 @@ import '../../../../theming/constants/styles.dart';
 import '../../../../theming/theme_calls.dart';
 
 class LoginButton extends StatelessWidget {
+  final bool login;
+
   const LoginButton({
     super.key,
+    this.login = true,
   });
 
   @override
@@ -30,7 +33,7 @@ class LoginButton extends StatelessWidget {
         ),
         backgroundColor: colorTheme.kBlueColor,
         child: Text(
-          'Login',
+          login ? 'Login' : 'Sign Up',
           style: h3LightTextStyle,
         ),
       ),
@@ -41,6 +44,7 @@ class LoginButton extends StatelessWidget {
     var res = await Providers.loginPf(context).login();
     var data = res.fold((l) => l, (r) => r);
     if (data is Failure) {
+      logger.e(data);
       GlobalUtils.showSnackBar(
         context: context,
         message: ErrorMapper(data).map(),

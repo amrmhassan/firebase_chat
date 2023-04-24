@@ -6,6 +6,7 @@ import 'package:firebase_chat/features/login/domain/repositories/login_failures.
 class FirebaseErrors {
   final String _networkError = 'network-request-failed';
   final String _userNotFound = 'user-not-found';
+  final String _invalidEmail = 'invalid-email';
 
   Map<String, Failure> get _errors => {
         _networkError: NoNetworkFailure(),
@@ -20,8 +21,9 @@ class FirebaseErrors {
       return NoNetworkFailure();
     } else if (key == _userNotFound) {
       return NoUserFailure();
-    } else {
-      return UnknownFailure(key);
+    } else if (key == _invalidEmail) {
+      return InvalidEmailFailure();
     }
+    return UnknownFailure(key);
   }
 }

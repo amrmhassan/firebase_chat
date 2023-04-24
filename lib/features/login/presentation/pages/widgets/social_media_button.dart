@@ -11,11 +11,13 @@ import '../../../../theming/theme_calls.dart';
 class SocialMediaButton extends StatelessWidget {
   final String iconPath;
   final String title;
+  final bool login;
 
   const SocialMediaButton({
     super.key,
     required this.iconPath,
     required this.title,
+    this.login = true,
   });
 
   @override

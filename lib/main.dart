@@ -2,6 +2,7 @@
 
 import 'package:firebase_chat/features/chat/presentation/screens/home_screen/home_screen.dart';
 import 'package:firebase_chat/features/login/presentation/pages/login_screen.dart';
+import 'package:firebase_chat/features/login/presentation/pages/signup_screen.dart';
 import 'package:firebase_chat/features/login/presentation/providers/login_provider.dart';
 import 'package:firebase_chat/features/theming/providers/theme_provider.dart';
 import 'package:firebase_chat/firebase_options.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
         routes: {
           HomeScreen.routeName: (ctx) => HomeScreen(),
           LoginScreen.routeName: (ctx) => LoginScreen(),
+          SignUpScreen.routeName: (ctx) => SignUpScreen(),
         },
       ),
     );
