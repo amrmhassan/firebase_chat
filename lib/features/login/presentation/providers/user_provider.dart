@@ -11,6 +11,7 @@ import 'package:firebase_chat/features/login/domain/usecases/google_sign_usecase
 import 'package:firebase_chat/features/login/domain/usecases/login_usecase.dart';
 import 'package:firebase_chat/features/login/domain/usecases/signup_usecase.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class UserProvider extends ChangeNotifier with UserMixin {
   TextEditingController emailController = TextEditingController();
@@ -21,10 +22,10 @@ class UserProvider extends ChangeNotifier with UserMixin {
   UserModel? userModel;
 
   // this uses user model by uid
-  Future<void> loadUserModel(String uid) async {
-    userModel = await getUserByUID(uid);
-    notifyListeners();
-  }
+  // Future<void> loadUserModel(String uid) async {
+  //   userModel = await getUserByUID(uid);
+  //   notifyListeners();
+  // }
 
   Future<Either<Failure, UserModel>> login() async {
     String email = emailController.text;
@@ -73,6 +74,9 @@ class UserProvider extends ChangeNotifier with UserMixin {
   }
 
   Future<void> logout() async {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+
     await FirebaseLoginRepo(FirebaseAuth.instance).logout();
+    await googleSignIn.signOut();
   }
 }

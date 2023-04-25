@@ -10,7 +10,7 @@ import '../../../../utils/global_utils.dart';
 import '../../data/models/user_model.dart';
 
 class LoginHandlers {
-  static void googleSignInHandler(BuildContext context) async {
+  static Future<void> googleSignInHandler(BuildContext context) async {
     var res = await Providers.userPf(context).googleSignIn();
     var data = res.fold((l) => l, (r) => r);
     if (data is Failure) {

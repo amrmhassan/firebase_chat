@@ -27,9 +27,14 @@ class FirebaseLoginRepo with UserMixin implements LoginRepo {
         return Left(NoUserFailure());
       }
 
-      UserModel userEntity = await getUserByEmail(email);
+      // UserModel userEntity = await getUserByEmail(email);
+      UserModel userModel = UserModel(
+        email: email,
+        name: cred.user!.displayName!,
+        uid: cred.user!.uid,
+      );
 
-      return Right(userEntity);
+      return Right(userModel);
     } on FirebaseAuthException catch (e) {
       Failure failure = FirebaseErrors().getFailure(e.code);
       return Left(failure);

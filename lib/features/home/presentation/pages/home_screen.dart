@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
         if (currentUser == null) {
           Navigator.pushReplacementNamed(context, LoginScreen.routeName);
         } else {
-          await Providers.userPf(context).loadUserModel(currentUser.uid);
+          // await Providers.userPf(context).loadUserModel(currentUser.uid);
           setState(() {
             userLoaded = true;
           });

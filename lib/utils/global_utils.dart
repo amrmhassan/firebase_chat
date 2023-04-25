@@ -16,6 +16,7 @@ class GlobalUtils {
     VoidCallback? onActionTapped,
     String? actionString,
   }) {
+    logger.i(message);
     try {
       ScaffoldMessenger.of(context).removeCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
