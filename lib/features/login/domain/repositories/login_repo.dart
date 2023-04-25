@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:firebase_chat/features/login/domain/entities/user_entity.dart';
+import 'package:firebase_chat/features/login/data/models/user_model.dart';
 
 import '../../../../core/errors/failure.dart';
 
 abstract class LoginRepo {
-  Future<Either<Failure, UserEntity>> emailPasswordLogin(
+  Future<Either<Failure, UserModel>> emailPasswordLogin(
     String email,
     String pass,
   );

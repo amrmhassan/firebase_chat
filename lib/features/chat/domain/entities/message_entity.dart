@@ -15,7 +15,7 @@ class MessageModel {
 
   static MessageModel fromJson(String id, Map<String, dynamic> obj) {
     return MessageModel(
-      id: obj[ModelsFields.id],
+      id: obj[ModelsFields.uid],
       email: obj[ModelsFields.email],
       name: obj[ModelsFields.name],
       text: obj[ModelsFields.message],

@@ -23,9 +23,11 @@ class ErrorMapper {
     } else if (failure is NoUserFailure) {
       return 'User not found, sign up please!';
     } else if (failure is EmptyCredFailures) {
-      return 'Please enter email and password';
+      return 'Please enter info';
     } else if (failure is InvalidEmailFailure) {
       return 'Invalid email';
+    } else if (failure is EmailAlreadyCreatedFailure) {
+      return 'You can\'t use this email';
     }
 
     return 'Unknown error';

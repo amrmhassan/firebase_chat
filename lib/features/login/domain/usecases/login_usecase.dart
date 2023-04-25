@@ -1,5 +1,5 @@
 import 'package:firebase_chat/core/errors/failure.dart';
-import 'package:firebase_chat/features/login/domain/entities/user_entity.dart';
+import 'package:firebase_chat/features/login/data/models/user_model.dart';
 import 'package:firebase_chat/features/login/domain/repositories/login_repo.dart';
 import 'package:dartz/dartz.dart';
 
@@ -8,7 +8,7 @@ class LoginUseCase {
 
   const LoginUseCase(this._loginRepo);
 
-  Future<Either<Failure, UserEntity>> call(String email, String pass) async {
+  Future<Either<Failure, UserModel>> call(String email, String pass) async {
     return _loginRepo.emailPasswordLogin(email, pass);
   }
 }

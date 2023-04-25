@@ -7,6 +7,7 @@ class FirebaseErrors {
   final String _networkError = 'network-request-failed';
   final String _userNotFound = 'user-not-found';
   final String _invalidEmail = 'invalid-email';
+  final String _emailAlreadyCreated = 'email-already-in-use';
 
   Map<String, Failure> get _errors => {
         _networkError: NoNetworkFailure(),
@@ -23,6 +24,8 @@ class FirebaseErrors {
       return NoUserFailure();
     } else if (key == _invalidEmail) {
       return InvalidEmailFailure();
+    } else if (key == _emailAlreadyCreated) {
+      return EmailAlreadyCreatedFailure();
     }
     return UnknownFailure(key);
   }

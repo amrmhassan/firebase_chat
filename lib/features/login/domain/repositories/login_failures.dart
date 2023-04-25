@@ -9,3 +9,6 @@ class WrongCredFailure implements Failure {}
 class NoUserFailure implements Failure {}
 
 class InvalidEmailFailure implements Failure {}
+
+// sign up errors
+class EmailAlreadyCreatedFailure implements Failure {}

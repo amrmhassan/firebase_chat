@@ -26,7 +26,7 @@ class LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return PaddingWrapper(
       child: ButtonWrapper(
-        onTap: () => handleLogin(context),
+        onTap: () => handleLoginButtonClick(context),
         padding: EdgeInsets.symmetric(
           horizontal: kHPad,
           vertical: kVPad / 2,
@@ -40,7 +40,15 @@ class LoginButton extends StatelessWidget {
     );
   }
 
-  void handleLogin(BuildContext context) async {
+  void handleLoginButtonClick(BuildContext context) async {
+    if (login) {
+      await handleLogin(context);
+    } else {
+      await handleSignup(context);
+    }
+  }
+
+  Future<void> handleLogin(BuildContext context) async {
     var res = await Providers.loginPf(context).login();
     var data = res.fold((l) => l, (r) => r);
     if (data is Failure) {
@@ -54,6 +62,25 @@ class LoginButton extends StatelessWidget {
       GlobalUtils.showSnackBar(
         context: context,
         message: 'Logged in successfully',
+        snackBarType: SnackBarType.info,
+      );
+    }
+  }
+
+  Future<void> handleSignup(BuildContext context) async {
+    var res = await Providers.loginPf(context).signUp();
+    var data = res.fold((l) => l, (r) => r);
+    if (data is Failure) {
+      logger.e(data);
+      GlobalUtils.showSnackBar(
+        context: context,
+        message: ErrorMapper(data).map(),
+        snackBarType: SnackBarType.error,
+      );
+    } else if (data is UserEntity) {
+      GlobalUtils.showSnackBar(
+        context: context,
+        message: 'Singed you up successfully',
         snackBarType: SnackBarType.info,
       );
     }
