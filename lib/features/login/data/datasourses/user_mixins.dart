@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_chat/features/login/data/models/user_model.dart';
-import 'package:firebase_chat/features/login/domain/entities/user_entity.dart';
 import 'package:firebase_chat/transformers/collections.dart';
 import 'package:firebase_chat/transformers/models_fields.dart';
 
@@ -15,7 +14,17 @@ mixin UserMixin {
     return userModel;
   }
 
-  Future<UserModel> saveUserToDB(UserEntity userEntity) async {
+  Future<UserModel> getUserByUID(String uid) async {
+    var res = await FirebaseFirestore.instance
+        .collection(DBCollections.users)
+        .where(ModelsFields.uid, isEqualTo: uid)
+        .get();
+    var userMap = res.docs.first.data();
+    UserModel userModel = UserModel.fromJSON(userMap);
+    return userModel;
+  }
+
+  Future<UserModel> saveUserToDB(UserModel userEntity) async {
     await FirebaseFirestore.instance
         .collection(DBCollections.users)
         .doc(userEntity.uid)

@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/features/login/data/datasourses/user_mixins.dart';
-import 'package:firebase_chat/features/login/domain/entities/user_entity.dart';
+import 'package:firebase_chat/features/login/data/models/user_model.dart';
 import 'package:firebase_chat/features/login/domain/repositories/signup_repo.dart';
 
 import '../../../../core/errors/failure.dart';
@@ -15,7 +15,7 @@ class FirebaseSignupRepo with UserMixin implements SignUpRepo {
   const FirebaseSignupRepo(this._firebaseAuth);
 
   @override
-  Future<Either<Failure, UserEntity>> signUpWithEmailPassword(
+  Future<Either<Failure, UserModel>> signUpWithEmailPassword(
     String email,
     String pass,
     String name,
@@ -29,14 +29,14 @@ class FirebaseSignupRepo with UserMixin implements SignUpRepo {
       if (cred.user == null) {
         return Left(NoUserFailure());
       }
-      UserEntity userEntity = UserEntity(
+      UserModel userModel = UserModel(
         email: cred.user!.email!,
         uid: cred.user!.uid,
         name: name,
       );
-      await saveUserToDB(userEntity);
+      await saveUserToDB(userModel);
 
-      return Right(userEntity);
+      return Right(userModel);
     } on FirebaseAuthException catch (e) {
       Failure failure = FirebaseErrors().getFailure(e.code);
       logger.e(failure);

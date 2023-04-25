@@ -28,6 +28,8 @@ class ErrorMapper {
       return 'Invalid email';
     } else if (failure is EmailAlreadyCreatedFailure) {
       return 'You can\'t use this email';
+    } else if (failure is WrongPasswordFailure) {
+      return 'Wrong password';
     }
 
     return 'Unknown error';

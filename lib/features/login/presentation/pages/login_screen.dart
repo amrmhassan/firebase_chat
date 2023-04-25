@@ -49,14 +49,14 @@ class LoginScreen extends StatelessWidget {
                 ),
                 VSpace(),
                 LoginFormTextField(
-                  controller: Providers.loginPf(context).emailController,
+                  controller: Providers.userPf(context).emailController,
                   hint: 'you@example.com',
                   iconPath: 'assets/svg/email.svg',
                   inputType: TextInputType.emailAddress,
                 ),
                 VSpace(factor: .5),
                 LoginFormTextField(
-                  controller: Providers.loginPf(context).passwordController,
+                  controller: Providers.userPf(context).passwordController,
                   hint: 'At least 8 characters',
                   iconPath: 'assets/svg/lock.svg',
                   inputType: TextInputType.visiblePassword,

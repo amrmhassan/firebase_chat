@@ -10,5 +10,7 @@ class NoUserFailure implements Failure {}
 
 class InvalidEmailFailure implements Failure {}
 
+class WrongPasswordFailure implements Failure {}
+
 // sign up errors
 class EmailAlreadyCreatedFailure implements Failure {}

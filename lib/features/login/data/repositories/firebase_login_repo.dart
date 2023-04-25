@@ -33,8 +33,6 @@ class FirebaseLoginRepo with UserMixin implements LoginRepo {
       return Right(userEntity);
     } on FirebaseAuthException catch (e) {
       Failure failure = FirebaseErrors().getFailure(e.code);
-      logger.e(failure);
-
       return Left(failure);
     } catch (e) {
       return Left(UnknownFailure(e));
