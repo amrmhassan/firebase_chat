@@ -2,6 +2,7 @@
 
 import 'dart:ui';
 
+import 'package:firebase_chat/features/login/presentation/handlers/login_handlers.dart';
 import 'package:firebase_chat/utils/providers_calls.dart';
 import 'package:flutter/material.dart';
 
@@ -76,6 +77,8 @@ class LoginScreen extends StatelessWidget {
                         child: SocialMediaButton(
                           title: 'Google',
                           iconPath: 'assets/icons/google.png',
+                          onTap: () =>
+                              LoginHandlers.googleSignInHandler(context),
                         ),
                       ),
                       HSpace(),

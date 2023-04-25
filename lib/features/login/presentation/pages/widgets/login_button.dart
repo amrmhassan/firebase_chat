@@ -3,7 +3,6 @@
 import 'package:firebase_chat/core/errors/failure.dart';
 import 'package:firebase_chat/core/navigation.dart';
 import 'package:firebase_chat/core/types.dart';
-import 'package:firebase_chat/features/chat/presentation/screens/home_screen/home_screen.dart';
 import 'package:firebase_chat/features/login/data/models/user_model.dart';
 import 'package:firebase_chat/features/login/presentation/providers/user_provider.dart';
 import 'package:firebase_chat/init/initiators.dart';
@@ -100,8 +99,8 @@ class LoginButton extends StatelessWidget {
         message: 'Singed you up successfully',
         snackBarType: SnackBarType.info,
       );
+      CNav.pop(context);
     }
-    CNav.pop(context);
     return data;
   }
 }

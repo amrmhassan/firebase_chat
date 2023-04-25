@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_chat/core/types.dart';
 import 'package:firebase_chat/features/login/data/models/user_model.dart';
 import 'package:firebase_chat/features/login/presentation/pages/login_screen.dart';
 import 'package:firebase_chat/features/login/presentation/providers/user_provider.dart';
+import 'package:firebase_chat/utils/global_utils.dart';
 import 'package:firebase_chat/utils/providers_calls.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,14 +24,22 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     Future.delayed(Duration.zero).then((value) async {
-      User? currentUser = FirebaseAuth.instance.currentUser;
-      if (currentUser == null) {
-        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
-      } else {
-        await Providers.userPf(context).loadUserModel(currentUser.uid);
-        setState(() {
-          userLoaded = true;
-        });
+      try {
+        User? currentUser = FirebaseAuth.instance.currentUser;
+        if (currentUser == null) {
+          Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+        } else {
+          await Providers.userPf(context).loadUserModel(currentUser.uid);
+          setState(() {
+            userLoaded = true;
+          });
+        }
+      } catch (e) {
+        GlobalUtils.showSnackBar(
+          context: context,
+          message: 'Error Occurred',
+          snackBarType: SnackBarType.error,
+        );
       }
     });
     super.initState();
@@ -78,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   selector: (p0, p1) => p1.userModel,
                   shouldRebuild: (previous, next) => previous?.uid != next?.uid,
                   builder: (context, value, child) => Text(
-                    value!.name,
+                    user.displayName ?? 'No name',
                     style: TextStyle(
                       color: Colors.black,
                     ),

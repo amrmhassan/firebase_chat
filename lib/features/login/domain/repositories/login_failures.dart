@@ -14,3 +14,8 @@ class WrongPasswordFailure implements Failure {}
 
 // sign up errors
 class EmailAlreadyCreatedFailure implements Failure {}
+
+// google auth
+class NotSignedInWithGoogleFailure implements Failure {}
+
+class InsufficientGoogleInfoFailure implements Failure {}

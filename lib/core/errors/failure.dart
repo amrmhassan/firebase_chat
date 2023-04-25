@@ -30,6 +30,8 @@ class ErrorMapper {
       return 'You can\'t use this email';
     } else if (failure is WrongPasswordFailure) {
       return 'Wrong password';
+    } else if (failure is NotSignedInWithGoogleFailure) {
+      return 'No google account selected';
     }
 
     return 'Unknown error';

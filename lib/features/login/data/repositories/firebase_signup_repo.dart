@@ -34,7 +34,8 @@ class FirebaseSignupRepo with UserMixin implements SignUpRepo {
         uid: cred.user!.uid,
         name: name,
       );
-      await saveUserToDB(userModel);
+      await cred.user!.updateDisplayName(name);
+      // await saveUserToDB(userModel);
 
       return Right(userModel);
     } on FirebaseAuthException catch (e) {

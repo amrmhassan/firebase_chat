@@ -5,7 +5,6 @@ import 'package:firebase_chat/features/login/data/datasourses/user_mixins.dart';
 import 'package:firebase_chat/features/login/data/models/user_model.dart';
 import 'package:firebase_chat/features/login/domain/repositories/login_failures.dart';
 import 'package:firebase_chat/features/login/domain/repositories/login_repo.dart';
-import 'package:firebase_chat/init/initiators.dart';
 
 import '../../../../core/errors/failure.dart';
 

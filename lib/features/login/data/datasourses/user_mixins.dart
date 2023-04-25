@@ -24,11 +24,11 @@ mixin UserMixin {
     return userModel;
   }
 
-  Future<UserModel> saveUserToDB(UserModel userEntity) async {
-    await FirebaseFirestore.instance
-        .collection(DBCollections.users)
-        .doc(userEntity.uid)
-        .set(userEntity.toJSON());
-    return userEntity;
-  }
+  // Future<UserModel> saveUserToDB(UserModel userModel) async {
+  //   await FirebaseFirestore.instance
+  //       .collection(DBCollections.users)
+  //       .doc(userModel.uid)
+  //       .set(userModel.toJSON());
+  //   return userModel;
+  // }
 }
