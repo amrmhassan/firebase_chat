@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:firebase_chat/core/navigation.dart';
 import 'package:firebase_chat/features/login/presentation/handlers/login_handlers.dart';
+import 'package:firebase_chat/features/login/presentation/pages/widgets/login_app_bar.dart';
 import 'package:firebase_chat/utils/providers_calls.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +31,7 @@ class SignUpScreen extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       backgroundColor: colorTheme.backGround,
       extendBodyBehindAppBar: true,
-      appBar: loginAppBar,
+      appBar: loginAppBar(false),
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
@@ -131,19 +132,3 @@ class SignUpScreen extends StatelessWidget {
     );
   }
 }
-
-var loginAppBar = AppBar(
-  backgroundColor: Colors.transparent,
-  elevation: 0,
-  title: Text('Sign Up'),
-  flexibleSpace: FlexibleSpaceBar(
-      background: BackdropFilter(
-    filter: ImageFilter.blur(
-      sigmaX: 3,
-      sigmaY: 3,
-    ),
-    child: Container(
-      color: colorTheme.backGround.withOpacity(.5),
-    ),
-  )),
-);
