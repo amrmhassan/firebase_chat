@@ -101,7 +101,7 @@ class SignUpScreen extends StatelessWidget {
                           title: 'Google',
                           iconPath: 'assets/icons/google.png',
                           onTap: () async {
-                            await LoginHandlers.googleSignInHandler(context);
+                            await LoginHandlers.googleLogin(context);
                             CNav.pop(context);
                           },
                         ),
@@ -111,6 +111,10 @@ class SignUpScreen extends StatelessWidget {
                         child: SocialMediaButton(
                           title: 'Facebook',
                           iconPath: 'assets/icons/facebook.png',
+                          onTap: () async {
+                            await LoginHandlers.facebookLogin(context);
+                            CNav.pop(context);
+                          },
                         ),
                       ),
                     ],

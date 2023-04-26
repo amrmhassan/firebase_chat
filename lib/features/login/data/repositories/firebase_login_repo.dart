@@ -1,59 +1,34 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_chat/core/errors/firebase_errors.dart';
-import 'package:firebase_chat/features/login/data/models/user_model.dart';
-import 'package:firebase_chat/features/login/domain/repositories/login_failures.dart';
 import 'package:firebase_chat/features/login/domain/repositories/login_repo.dart';
 
 import '../../../../core/errors/failure.dart';
 
 class FirebaseLoginRepo extends LoginRepo {
   final FirebaseAuth _firebaseAuth;
+  final String? email;
+  final String? pass;
 
   FirebaseLoginRepo(
-    this._firebaseAuth,
-  );
+    this._firebaseAuth, [
+    this.email,
+    this.pass,
+  ]);
 
-  @override
-  Future<Either<Failure, UserModel>> emailPasswordLogin([
-    String? email,
-    String? pass,
-  ]) async {
-    try {
-      var cred = await _firebaseAuth.signInWithEmailAndPassword(
-        email: email!,
-        password: pass!,
-      );
-
-      if (cred.user == null) {
-        return Left(NoUserFailure());
-      }
-
-      // UserModel userEntity = await getUserByEmail(email);
-      UserModel userModel = UserModel(
-        email: email,
-        name: cred.user!.displayName!,
-        uid: cred.user!.uid,
-      );
-
-      return Right(userModel);
-    } on FirebaseAuthException catch (e) {
-      Failure failure = FirebaseErrors().getFailure(e.code);
-      return Left(failure);
-    } catch (e) {
-      return Left(UnknownFailure(e));
+  Future<UserCredential> _emailPasswordLogin() async {
+    if (email == null || pass == null) {
+      throw Exception('Email or password is null');
     }
+    var cred = await _firebaseAuth.signInWithEmailAndPassword(
+      email: email!,
+      password: pass!,
+    );
+
+    return cred;
   }
 
   @override
-  Future<Either<Failure, bool>> isSignedIn() async {
-    bool res = _firebaseAuth.currentUser != null;
-    return Right(res);
-  }
-
-  @override
-  Future<Either<Failure, Unit>> logout() async {
-    await _firebaseAuth.signOut();
-    return const Right(unit);
+  Future<Either<Failure, UserCredential>> getCred() async {
+    return Right(await _emailPasswordLogin());
   }
 }

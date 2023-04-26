@@ -2,6 +2,7 @@
 
 import 'dart:ui';
 
+import 'package:firebase_chat/features/login/data/repositories/facebook_sign_impl.dart';
 import 'package:firebase_chat/features/login/presentation/handlers/login_handlers.dart';
 import 'package:firebase_chat/features/login/presentation/providers/user_provider.dart';
 import 'package:firebase_chat/utils/providers_calls.dart';
@@ -94,14 +95,13 @@ class LoginScreen extends StatelessWidget {
                         child: SocialMediaButton(
                           title: 'Google',
                           iconPath: 'assets/icons/google.png',
-                          onTap: () =>
-                              LoginHandlers.googleSignInHandler(context),
+                          onTap: () => LoginHandlers.googleLogin(context),
                         ),
                       ),
                       HSpace(),
                       Expanded(
                         child: SocialMediaButton(
-                          onTap: () => handleFacebookLogin(context),
+                          onTap: () => LoginHandlers.facebookLogin(context),
                           title: 'Facebook',
                           iconPath: 'assets/icons/facebook.png',
                         ),
@@ -118,26 +118,6 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Future<dynamic> handleFacebookLogin(BuildContext context) async {
-    var res = await Providers.userPf(context).facebookSignIn();
-    var data = res.fold((l) => l, (r) => r);
-    if (data is Failure) {
-      logger.e(data);
-      GlobalUtils.showSnackBar(
-        context: context,
-        message: ErrorMapper(data).map(),
-        snackBarType: SnackBarType.error,
-      );
-    } else if (data is UserModel) {
-      GlobalUtils.showSnackBar(
-        context: context,
-        message: 'Logged in successfully',
-        snackBarType: SnackBarType.info,
-      );
-    }
-    return data;
   }
 }
 

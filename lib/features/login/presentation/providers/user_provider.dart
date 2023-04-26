@@ -9,6 +9,8 @@ import 'package:firebase_chat/features/login/data/repositories/firebase_login_re
 import 'package:firebase_chat/features/login/data/repositories/firebase_signup_repo.dart';
 import 'package:firebase_chat/features/login/data/repositories/google_sign_repo_impl.dart';
 import 'package:firebase_chat/features/login/domain/repositories/login_failures.dart';
+import 'package:firebase_chat/features/login/domain/repositories/login_repo.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -24,7 +26,7 @@ class UserProvider extends ChangeNotifier with UserMixin {
   bool logging = false;
   UserModel? userModel;
 
-  Future<Either<Failure, UserModel>> login() async {
+  Future<Either<Failure, UserModel>> normalLogin() async {
     _setLoggedButtonClicked(true);
     validateEmail();
     validatePassword();
@@ -39,17 +41,7 @@ class UserProvider extends ChangeNotifier with UserMixin {
     String password = passwordController.text;
 
     if (email.isEmpty || password.isEmpty) return Left(EmptyCredFailures());
-    logging = true;
-    notifyListeners();
-
-    // var res = await LoginUseCase(FirebaseLoginRepo(FirebaseAuth.instance))
-    //     .call(email, password);
-    var res = await FirebaseLoginRepo(FirebaseAuth.instance)
-        .emailPasswordLogin(email, password);
-
-    logging = false;
-    notifyListeners();
-    return res;
+    return signIn(FirebaseLoginRepo(FirebaseAuth.instance));
   }
 
   Future<Either<Failure, UserModel>> signUp() async {
@@ -81,34 +73,43 @@ class UserProvider extends ChangeNotifier with UserMixin {
     return res;
   }
 
-  Future<Either<Failure, UserModel>> googleSignIn() async {
+  Future<Either<Failure, UserModel>> signIn(LoginRepo repo) async {
     logging = true;
     notifyListeners();
 
-    // var res = await GoogleSignUseCase(GoogleSignImpl()).call();
-    var res = await GoogleSignImpl().sign();
+    var res = await repo.login();
 
     logging = false;
     notifyListeners();
     return res;
   }
 
-  Future<Either<Failure, UserModel>> facebookSignIn() async {
-    logging = true;
-    notifyListeners();
+  // Future<Either<Failure, UserModel>> googleSignIn() async {
+  //   logging = true;
+  //   notifyListeners();
 
-    var res = await FacebookSignImpl().sign();
+  //   var res = await GoogleSignImpl().login();
 
-    logging = false;
-    notifyListeners();
-    return res;
-  }
+  //   logging = false;
+  //   notifyListeners();
+  //   return res;
+  // }
+
+  // Future<Either<Failure, UserModel>> facebookSignIn() async {
+  //   logging = true;
+  //   notifyListeners();
+
+  //   var res = await FacebookSignImpl().login();
+
+  //   logging = false;
+  //   notifyListeners();
+  //   return res;
+  // }
 
   Future<void> logout() async {
     _setLoggedButtonClicked(false);
     final GoogleSignIn googleSignIn = GoogleSignIn();
-
-    await FirebaseLoginRepo(FirebaseAuth.instance).logout();
+    await FirebaseAuth.instance.signOut();
     await googleSignIn.signOut();
 
     // facebook logout

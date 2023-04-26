@@ -64,7 +64,7 @@ class LoginButton extends StatelessWidget {
   }
 
   Future<dynamic> handleLogin(BuildContext context) async {
-    var res = await Providers.userPf(context).login();
+    var res = await Providers.userPf(context).normalLogin();
     var data = res.fold((l) => l, (r) => r);
     if (data is Failure) {
       logger.e(data);
