@@ -9,6 +9,8 @@ class FirebaseErrors {
   final String _invalidEmail = 'invalid-email';
   final String _emailAlreadyCreated = 'email-already-in-use';
   final String _wrongPassword = 'wrong-password';
+  final String _emailAlreadySignedWithDifferentWay =
+      'account-exists-with-different-credential';
 
   Map<String, Failure> get _errors => {
         _networkError: NoNetworkFailure(),
@@ -29,6 +31,8 @@ class FirebaseErrors {
       return EmailAlreadyCreatedFailure();
     } else if (key == _wrongPassword) {
       return WrongPasswordFailure();
+    } else if (key == _emailAlreadySignedWithDifferentWay) {
+      return EmailExistsWithDifferentProviderFailure();
     }
     return UnknownFailure(key);
   }

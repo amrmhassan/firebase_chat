@@ -1,15 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/core/errors/failure.dart';
-import 'package:firebase_chat/features/login/data/datasourses/user_mixins.dart';
-import 'package:firebase_chat/features/login/domain/repositories/google_sign_repo.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../../../core/errors/firebase_errors.dart';
 import '../../domain/repositories/login_failures.dart';
 import '../models/user_model.dart';
 
-class GoogleSignImpl with UserMixin implements GoogleSignRepo {
-  @override
+class GoogleSignImpl {
   Future<Either<Failure, UserModel>> sign() async {
     try {
       GoogleSignIn googleSignIn = GoogleSignIn();
@@ -38,8 +36,10 @@ class GoogleSignImpl with UserMixin implements GoogleSignRepo {
         name: user.displayName!,
         uid: user.uid,
       );
-      // await saveUserToDB(userModel);
       return Right(userModel);
+    } on FirebaseAuthException catch (e) {
+      Failure failure = FirebaseErrors().getFailure(e.code);
+      return Left(failure);
     } catch (e) {
       return Left(UnknownFailure(e));
     }

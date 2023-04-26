@@ -1,26 +1,28 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/core/errors/firebase_errors.dart';
-import 'package:firebase_chat/features/login/data/datasourses/user_mixins.dart';
 import 'package:firebase_chat/features/login/data/models/user_model.dart';
 import 'package:firebase_chat/features/login/domain/repositories/login_failures.dart';
 import 'package:firebase_chat/features/login/domain/repositories/login_repo.dart';
 
 import '../../../../core/errors/failure.dart';
 
-class FirebaseLoginRepo with UserMixin implements LoginRepo {
+class FirebaseLoginRepo extends LoginRepo {
   final FirebaseAuth _firebaseAuth;
-  const FirebaseLoginRepo(this._firebaseAuth);
+
+  FirebaseLoginRepo(
+    this._firebaseAuth,
+  );
 
   @override
-  Future<Either<Failure, UserModel>> emailPasswordLogin(
-    String email,
-    String pass,
-  ) async {
+  Future<Either<Failure, UserModel>> emailPasswordLogin([
+    String? email,
+    String? pass,
+  ]) async {
     try {
       var cred = await _firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: pass,
+        email: email!,
+        password: pass!,
       );
 
       if (cred.user == null) {

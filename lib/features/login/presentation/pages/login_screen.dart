@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'dart:ui';
 
@@ -8,11 +8,16 @@ import 'package:firebase_chat/utils/providers_calls.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/errors/failure.dart';
+import '../../../../core/types.dart';
 import '../../../../fast_tools/widgets/h_space.dart';
 import '../../../../fast_tools/widgets/padding_wrapper.dart';
 import '../../../../fast_tools/widgets/v_space.dart';
+import '../../../../init/initiators.dart';
+import '../../../../utils/global_utils.dart';
 import '../../../theming/constants/sizes.dart';
 import '../../../theming/theme_calls.dart';
+import '../../data/models/user_model.dart';
 import 'widgets/forget_password_button.dart';
 import 'widgets/login_button.dart';
 import 'widgets/login_form_text_filed.dart';
@@ -96,6 +101,7 @@ class LoginScreen extends StatelessWidget {
                       HSpace(),
                       Expanded(
                         child: SocialMediaButton(
+                          onTap: () => handleFacebookLogin(context),
                           title: 'Facebook',
                           iconPath: 'assets/icons/facebook.png',
                         ),
@@ -112,6 +118,26 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<dynamic> handleFacebookLogin(BuildContext context) async {
+    var res = await Providers.userPf(context).facebookSignIn();
+    var data = res.fold((l) => l, (r) => r);
+    if (data is Failure) {
+      logger.e(data);
+      GlobalUtils.showSnackBar(
+        context: context,
+        message: ErrorMapper(data).map(),
+        snackBarType: SnackBarType.error,
+      );
+    } else if (data is UserModel) {
+      GlobalUtils.showSnackBar(
+        context: context,
+        message: 'Logged in successfully',
+        snackBarType: SnackBarType.info,
+      );
+    }
+    return data;
   }
 }
 

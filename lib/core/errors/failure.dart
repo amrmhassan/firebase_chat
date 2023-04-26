@@ -34,6 +34,8 @@ class ErrorMapper {
       return 'No google account selected';
     } else if (failure is ValidationFailure) {
       return 'Please check your fields';
+    } else if (failure is EmailExistsWithDifferentProviderFailure) {
+      return 'Email exists with different provider';
     }
 
     return 'Unknown error';

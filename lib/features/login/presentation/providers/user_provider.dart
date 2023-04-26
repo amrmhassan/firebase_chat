@@ -4,14 +4,13 @@ import 'package:firebase_chat/core/errors/failure.dart';
 import 'package:firebase_chat/features/login/data/datasourses/user_mixins.dart';
 import 'package:firebase_chat/features/login/data/models/user_model.dart';
 import 'package:firebase_chat/features/login/data/repositories/email_validation.dart';
+import 'package:firebase_chat/features/login/data/repositories/facebook_sign_impl.dart';
 import 'package:firebase_chat/features/login/data/repositories/firebase_login_repo.dart';
 import 'package:firebase_chat/features/login/data/repositories/firebase_signup_repo.dart';
 import 'package:firebase_chat/features/login/data/repositories/google_sign_repo_impl.dart';
 import 'package:firebase_chat/features/login/domain/repositories/login_failures.dart';
-import 'package:firebase_chat/features/login/domain/usecases/google_sign_usecase.dart';
-import 'package:firebase_chat/features/login/domain/usecases/login_usecase.dart';
-import 'package:firebase_chat/features/login/domain/usecases/signup_usecase.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../data/repositories/name_validation.dart';
@@ -43,8 +42,10 @@ class UserProvider extends ChangeNotifier with UserMixin {
     logging = true;
     notifyListeners();
 
-    var res = await LoginUseCase(FirebaseLoginRepo(FirebaseAuth.instance))
-        .call(email, password);
+    // var res = await LoginUseCase(FirebaseLoginRepo(FirebaseAuth.instance))
+    //     .call(email, password);
+    var res = await FirebaseLoginRepo(FirebaseAuth.instance)
+        .emailPasswordLogin(email, password);
 
     logging = false;
     notifyListeners();
@@ -72,8 +73,8 @@ class UserProvider extends ChangeNotifier with UserMixin {
     logging = true;
     notifyListeners();
 
-    var res = await SignupUseCase(FirebaseSignupRepo(FirebaseAuth.instance))
-        .call(email, password, name);
+    var res = FirebaseSignupRepo(FirebaseAuth.instance)
+        .signUpWithEmailPassword(email, password, name);
 
     logging = false;
     notifyListeners();
@@ -84,7 +85,19 @@ class UserProvider extends ChangeNotifier with UserMixin {
     logging = true;
     notifyListeners();
 
-    var res = await GoogleSignUseCase(GoogleSignImpl()).call();
+    // var res = await GoogleSignUseCase(GoogleSignImpl()).call();
+    var res = await GoogleSignImpl().sign();
+
+    logging = false;
+    notifyListeners();
+    return res;
+  }
+
+  Future<Either<Failure, UserModel>> facebookSignIn() async {
+    logging = true;
+    notifyListeners();
+
+    var res = await FacebookSignImpl().sign();
 
     logging = false;
     notifyListeners();
@@ -97,6 +110,9 @@ class UserProvider extends ChangeNotifier with UserMixin {
 
     await FirebaseLoginRepo(FirebaseAuth.instance).logout();
     await googleSignIn.signOut();
+
+    // facebook logout
+    await FacebookAuth.instance.logOut();
   }
 
   //# validation
