@@ -51,6 +51,7 @@ class _LoginFormTextFieldState extends State<LoginFormTextField> {
       shouldRebuild: (previous, next) => previous != next,
       builder: (context, value, child) => CustomTextField(
         enabled: !value,
+        errorText: widget.errorText,
         controller: widget.controller,
         onChange: widget.onChange,
         autoFocus: widget.autoFocus,

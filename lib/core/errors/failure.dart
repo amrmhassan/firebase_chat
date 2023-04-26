@@ -32,6 +32,8 @@ class ErrorMapper {
       return 'Wrong password';
     } else if (failure is NotSignedInWithGoogleFailure) {
       return 'No google account selected';
+    } else if (failure is ValidationFailure) {
+      return 'Please check your fields';
     }
 
     return 'Unknown error';

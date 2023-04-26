@@ -3,8 +3,10 @@
 import 'dart:ui';
 
 import 'package:firebase_chat/features/login/presentation/handlers/login_handlers.dart';
+import 'package:firebase_chat/features/login/presentation/providers/user_provider.dart';
 import 'package:firebase_chat/utils/providers_calls.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../fast_tools/widgets/h_space.dart';
 import '../../../../fast_tools/widgets/padding_wrapper.dart';
@@ -49,19 +51,29 @@ class LoginScreen extends StatelessWidget {
                   ],
                 ),
                 VSpace(),
-                LoginFormTextField(
-                  controller: Providers.userPf(context).emailController,
-                  hint: 'you@example.com',
-                  iconPath: 'assets/svg/email.svg',
-                  inputType: TextInputType.emailAddress,
+                Selector<UserProvider, String?>(
+                  selector: (p0, p1) => p1.emailError,
+                  shouldRebuild: (previous, next) => previous != next,
+                  builder: (context, value, child) => LoginFormTextField(
+                    errorText: value,
+                    controller: Providers.userPf(context).emailController,
+                    hint: 'you@example.com',
+                    iconPath: 'assets/svg/email.svg',
+                    inputType: TextInputType.emailAddress,
+                  ),
                 ),
                 VSpace(factor: .5),
-                LoginFormTextField(
-                  controller: Providers.userPf(context).passwordController,
-                  hint: 'At least 8 characters',
-                  iconPath: 'assets/svg/lock.svg',
-                  inputType: TextInputType.visiblePassword,
-                  password: true,
+                Selector<UserProvider, String?>(
+                  selector: (p0, p1) => p1.passwordError,
+                  shouldRebuild: (previous, next) => previous != next,
+                  builder: (context, value, child) => LoginFormTextField(
+                    errorText: value,
+                    controller: Providers.userPf(context).passwordController,
+                    hint: 'Enter password',
+                    iconPath: 'assets/svg/lock.svg',
+                    inputType: TextInputType.visiblePassword,
+                    password: true,
+                  ),
                 ),
                 VSpace(factor: .5),
                 ForgetPasswordButton(),

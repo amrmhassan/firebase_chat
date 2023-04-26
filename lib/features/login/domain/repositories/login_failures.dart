@@ -19,3 +19,6 @@ class EmailAlreadyCreatedFailure implements Failure {}
 class NotSignedInWithGoogleFailure implements Failure {}
 
 class InsufficientGoogleInfoFailure implements Failure {}
+
+// validation failure
+class ValidationFailure implements Failure {}

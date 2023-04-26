@@ -6,12 +6,14 @@ import 'package:firebase_chat/core/navigation.dart';
 import 'package:firebase_chat/features/login/presentation/handlers/login_handlers.dart';
 import 'package:firebase_chat/utils/providers_calls.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../fast_tools/widgets/h_space.dart';
 import '../../../../fast_tools/widgets/padding_wrapper.dart';
 import '../../../../fast_tools/widgets/v_space.dart';
 import '../../../theming/constants/sizes.dart';
 import '../../../theming/theme_calls.dart';
+import '../providers/user_provider.dart';
 import 'widgets/login_button.dart';
 import 'widgets/login_form_text_filed.dart';
 import 'widgets/login_h_line.dart';
@@ -49,26 +51,41 @@ class SignUpScreen extends StatelessWidget {
                   ],
                 ),
                 VSpace(),
-                LoginFormTextField(
-                  controller: Providers.userPf(context).emailController,
-                  hint: 'you@example.com',
-                  iconPath: 'assets/svg/email.svg',
-                  inputType: TextInputType.emailAddress,
+                Selector<UserProvider, String?>(
+                  selector: (p0, p1) => p1.emailError,
+                  shouldRebuild: (previous, next) => previous != next,
+                  builder: (context, value, child) => LoginFormTextField(
+                    errorText: value,
+                    controller: Providers.userPf(context).emailController,
+                    hint: 'you@example.com',
+                    iconPath: 'assets/svg/email.svg',
+                    inputType: TextInputType.emailAddress,
+                  ),
                 ),
                 VSpace(factor: .5),
-                LoginFormTextField(
-                  controller: Providers.userPf(context).nameController,
-                  hint: 'Your name',
-                  iconPath: 'assets/svg/user.svg',
-                  inputType: TextInputType.text,
+                Selector<UserProvider, String?>(
+                  selector: (p0, p1) => p1.nameError,
+                  shouldRebuild: (previous, next) => previous != next,
+                  builder: (context, value, child) => LoginFormTextField(
+                    errorText: value,
+                    controller: Providers.userPf(context).nameController,
+                    hint: 'Your name',
+                    iconPath: 'assets/svg/user.svg',
+                    inputType: TextInputType.text,
+                  ),
                 ),
                 VSpace(factor: .5),
-                LoginFormTextField(
-                  controller: Providers.userPf(context).passwordController,
-                  hint: 'At least 8 characters',
-                  iconPath: 'assets/svg/lock.svg',
-                  inputType: TextInputType.visiblePassword,
-                  password: true,
+                Selector<UserProvider, String?>(
+                  selector: (p0, p1) => p1.passwordError,
+                  shouldRebuild: (previous, next) => previous != next,
+                  builder: (context, value, child) => LoginFormTextField(
+                    errorText: value,
+                    controller: Providers.userPf(context).passwordController,
+                    hint: 'At least 8 characters',
+                    iconPath: 'assets/svg/lock.svg',
+                    inputType: TextInputType.visiblePassword,
+                    password: true,
+                  ),
                 ),
                 VSpace(factor: .5),
                 VSpace(),
