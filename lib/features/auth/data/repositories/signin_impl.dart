@@ -34,11 +34,11 @@ class SignInImpl implements LoginRepo {
       if (user == null) {
         return Left(NoUserFailure());
       }
-      if (user.email == null || user.displayName == null) {
+      if (user.providerData.first.email == null || user.displayName == null) {
         return Left(InsufficientGoogleInfoFailure());
       }
       UserModel userModel = UserModel(
-        email: user.email!,
+        email: user.providerData.first.email!,
         name: user.displayName!,
         uid: user.uid,
       );

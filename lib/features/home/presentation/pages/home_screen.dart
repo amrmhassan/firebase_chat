@@ -1,14 +1,14 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_chat/core/constants/sign_provider.dart';
 import 'package:firebase_chat/core/types.dart';
-import 'package:firebase_chat/features/auth/data/models/user_model.dart';
 import 'package:firebase_chat/features/auth/presentation/pages/login_screen.dart';
-import 'package:firebase_chat/features/auth/presentation/providers/user_provider.dart';
 import 'package:firebase_chat/utils/global_utils.dart';
 import 'package:firebase_chat/utils/providers_calls.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/HomeScreen';
@@ -41,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
           snackBarType: SnackBarType.error,
         );
       }
+      checkVerification();
     });
     super.initState();
   }
@@ -48,6 +49,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     User user = FirebaseAuth.instance.currentUser!;
+    SignProvider? signProvider =
+        SignProvidersGet.get(user.providerData.first.providerId);
+    bool verified = signProvider != SignProvider.email || user.emailVerified;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Home Screen'),
@@ -70,8 +75,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: userLoaded
           ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                SizedBox(width: double.infinity),
                 Text(
                   user.uid,
                   style: TextStyle(
@@ -79,26 +85,64 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 Text(
-                  user.email ?? 'No email',
+                  user.providerData.first.email ?? 'No email',
                   style: TextStyle(
                     color: Colors.black,
                   ),
                 ),
-                Selector<UserProvider, UserModel?>(
-                  selector: (p0, p1) => p1.userModel,
-                  shouldRebuild: (previous, next) => previous?.uid != next?.uid,
-                  builder: (context, value, child) => Text(
-                    user.displayName ?? 'No name',
+                Text(
+                  SignProvidersGet.get(user.providerData.first.providerId)
+                      .toString(),
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  'verified $verified',
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+                ...user.providerData.map(
+                  (e) => Text(
+                    e.providerId,
                     style: TextStyle(
                       color: Colors.black,
                     ),
                   ),
                 ),
+                Text(
+                  user.displayName ?? 'No name',
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+                if (!verified)
+                  ElevatedButton(
+                    onPressed: () {
+                      user.sendEmailVerification();
+                    },
+                    child: Text('verify'),
+                  ),
               ],
             )
           : Center(
               child: CircularProgressIndicator(),
             ),
     );
+  }
+
+  void checkVerification() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+    if (!user.emailVerified) {
+      Timer.periodic(Duration(seconds: 5), (timer) async {
+        await user.reload();
+
+        if (FirebaseAuth.instance.currentUser?.emailVerified ?? false) {
+          timer.cancel();
+        }
+      });
+    }
   }
 }

@@ -38,8 +38,9 @@ class ErrorMapper {
       return 'Email exists with different provider';
     } else if (failure is EmailIsTempFailure) {
       return 'This email isn\'t not valid';
+    } else if (failure is InsufficientGoogleInfoFailure) {
+      return 'Insufficient info given';
     }
-
     return 'Unknown error';
   }
 }
