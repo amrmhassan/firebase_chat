@@ -3,6 +3,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/core/constants/api_keys.dart';
+import 'package:firebase_chat/core/constants/sign_provider.dart';
 import 'package:firebase_chat/features/auth/data/models/user_model.dart';
 import 'package:firebase_chat/features/auth/domain/repositories/signup_repo.dart';
 import 'package:firebase_chat/transformers/apis.dart';
@@ -71,6 +72,9 @@ class FirebaseSignupRepo implements SignUpRepo {
         email: cred.user!.email!,
         uid: cred.user!.uid,
         name: name,
+        accessToken: null,
+        provider: SignProvidersConstants.email,
+        providerId: cred.additionalUserInfo?.providerId,
       );
       await cred.user!.updateDisplayName(name);
       // await saveUserToDB(userModel);

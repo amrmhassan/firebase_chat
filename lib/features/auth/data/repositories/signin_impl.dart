@@ -2,9 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/core/errors/failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_chat/features/auth/data/datasourses/login_datasource.dart';
-import 'package:firebase_chat/features/auth/data/datasourses/remote_datasource.dart';
 import 'package:firebase_chat/features/auth/data/models/user_model.dart';
-import 'package:firebase_chat/features/auth/domain/repositories/login_failures.dart';
 import 'package:firebase_chat/features/auth/domain/repositories/login_repo.dart';
 
 import '../../../../core/errors/firebase_errors.dart';
@@ -14,35 +12,10 @@ class SignInImpl implements LoginRepo {
 
   SignInImpl(this._loginDataSource);
 
-  Future<Either<Failure, UserCredential>> _getCred() async {
-    var cred = await _loginDataSource.getCred();
-    if (cred == null) {
-      return Left(AuthPermissionNotGranted());
-    }
-    return Right(cred);
-  }
-
   Future<Either<Failure, UserModel>> _realLogin() async {
     try {
-      var res = (await _getCred()).fold((l) => l, (r) => r);
-      if (res is Failure) {
-        return Left(res);
-      }
-      var cred = res as UserCredential;
-
-      final user = cred.user;
-      if (user == null) {
-        return Left(NoUserFailure());
-      }
-      if (user.providerData.first.email == null || user.displayName == null) {
-        return Left(InsufficientGoogleInfoFailure());
-      }
-      UserModel userModel = UserModel(
-        email: user.providerData.first.email!,
-        name: user.displayName!,
-        uid: user.uid,
-      );
-      return Right(userModel);
+      var res = await _loginDataSource.user();
+      return res;
     } on FirebaseAuthException catch (e) {
       Failure failure = FirebaseErrors().getFailure(e.code);
       return Left(failure);
@@ -51,16 +24,8 @@ class SignInImpl implements LoginRepo {
     }
   }
 
-  Future<UserModel> _testLogin() {
-    return _loginDataSource.getTestUser();
-  }
-
   @override
   Future<Either<Failure, UserModel>> login() async {
-    if (_loginDataSource is RemoteDataSource) {
-      return _realLogin();
-    } else {
-      return Right(await _testLogin());
-    }
+    return _realLogin();
   }
 }

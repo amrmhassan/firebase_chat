@@ -1,4 +1,4 @@
-class _SignProvidersConstants {
+class SignProvidersConstants {
   static const String email = 'password';
   static const String google = 'google.com';
   static const String facebook = 'facebook.com';
@@ -6,11 +6,11 @@ class _SignProvidersConstants {
 
 class SignProvidersGet {
   static SignProvider? get(String provider) {
-    if (provider == _SignProvidersConstants.google) {
+    if (provider == SignProvidersConstants.google) {
       return SignProvider.google;
-    } else if (provider == _SignProvidersConstants.facebook) {
+    } else if (provider == SignProvidersConstants.facebook) {
       return SignProvider.facebook;
-    } else if (provider == _SignProvidersConstants.email) {
+    } else if (provider == SignProvidersConstants.email) {
       return SignProvider.email;
     }
     return null;

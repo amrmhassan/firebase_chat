@@ -64,6 +64,7 @@ class MyApp extends StatelessWidget {
                   SignProvidersGet.get(user.providerData.first.providerId);
               bool verified =
                   signProvider != SignProvider.email || user.emailVerified;
+
               if (verified) {
                 return HomeScreen();
               } else {
