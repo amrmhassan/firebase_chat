@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_chat/features/login/data/datasourses/user_mixins.dart';
 import 'package:firebase_chat/features/login/data/models/user_model.dart';
 import 'package:firebase_chat/features/login/domain/repositories/signup_repo.dart';
 
@@ -9,7 +8,7 @@ import '../../../../core/errors/firebase_errors.dart';
 import '../../../../init/initiators.dart';
 import '../../domain/repositories/login_failures.dart';
 
-class FirebaseSignupRepo with UserMixin implements SignUpRepo {
+class FirebaseSignupRepo implements SignUpRepo {
   final FirebaseAuth _firebaseAuth;
 
   const FirebaseSignupRepo(this._firebaseAuth);

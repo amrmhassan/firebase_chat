@@ -1,16 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/core/errors/failure.dart';
-import 'package:firebase_chat/features/login/data/datasourses/user_mixins.dart';
 import 'package:firebase_chat/features/login/data/models/user_model.dart';
 import 'package:firebase_chat/features/login/data/repositories/email_validation.dart';
-import 'package:firebase_chat/features/login/data/repositories/facebook_sign_impl.dart';
 import 'package:firebase_chat/features/login/data/repositories/firebase_login_repo.dart';
 import 'package:firebase_chat/features/login/data/repositories/firebase_signup_repo.dart';
-import 'package:firebase_chat/features/login/data/repositories/google_sign_repo_impl.dart';
 import 'package:firebase_chat/features/login/domain/repositories/login_failures.dart';
 import 'package:firebase_chat/features/login/domain/repositories/login_repo.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -18,7 +14,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../data/repositories/name_validation.dart';
 import '../../data/repositories/password_validation.dart';
 
-class UserProvider extends ChangeNotifier with UserMixin {
+class UserProvider extends ChangeNotifier {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -83,28 +79,6 @@ class UserProvider extends ChangeNotifier with UserMixin {
     notifyListeners();
     return res;
   }
-
-  // Future<Either<Failure, UserModel>> googleSignIn() async {
-  //   logging = true;
-  //   notifyListeners();
-
-  //   var res = await GoogleSignImpl().login();
-
-  //   logging = false;
-  //   notifyListeners();
-  //   return res;
-  // }
-
-  // Future<Either<Failure, UserModel>> facebookSignIn() async {
-  //   logging = true;
-  //   notifyListeners();
-
-  //   var res = await FacebookSignImpl().login();
-
-  //   logging = false;
-  //   notifyListeners();
-  //   return res;
-  // }
 
   Future<void> logout() async {
     _setLoggedButtonClicked(false);
