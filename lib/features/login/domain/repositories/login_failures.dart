@@ -14,6 +14,8 @@ class WrongPasswordFailure implements Failure {}
 
 class EmailExistsWithDifferentProviderFailure implements Failure {}
 
+class AuthPermissionNotGranted implements Failure {}
+
 // sign up errors
 class EmailAlreadyCreatedFailure implements Failure {}
 
@@ -26,6 +28,5 @@ class InsufficientGoogleInfoFailure implements Failure {}
 class ValidationFailure implements Failure {}
 
 // facebook failures
-class FacebookAuthNotGranted implements Failure {}
 
 class InsufficientFacebookInfoFailure implements Failure {}

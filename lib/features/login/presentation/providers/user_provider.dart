@@ -2,17 +2,17 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/core/errors/failure.dart';
 import 'package:firebase_chat/features/login/data/models/user_model.dart';
-import 'package:firebase_chat/features/login/data/repositories/email_validation.dart';
-import 'package:firebase_chat/features/login/data/repositories/firebase_login_repo.dart';
 import 'package:firebase_chat/features/login/data/repositories/firebase_signup_repo.dart';
+import 'package:firebase_chat/features/login/data/repositories/signin_impl.dart';
 import 'package:firebase_chat/features/login/domain/repositories/login_failures.dart';
 import 'package:firebase_chat/features/login/domain/repositories/login_repo.dart';
+import 'package:firebase_chat/features/login/domain/repositories/login_validation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../../data/repositories/name_validation.dart';
-import '../../data/repositories/password_validation.dart';
+import '../../data/datasourses/login_datasource.dart';
+import '../../data/repositories/validation_impl.dart';
 
 class UserProvider extends ChangeNotifier {
   TextEditingController emailController = TextEditingController();
@@ -24,8 +24,8 @@ class UserProvider extends ChangeNotifier {
 
   Future<Either<Failure, UserModel>> normalLogin() async {
     _setLoggedButtonClicked(true);
-    validateEmail();
-    validatePassword();
+    validateEntry(EmailValidation(), emailController.text);
+    validateEntry(PasswordValidation(), passwordController.text);
 
     if (!_allowLogin) {
       logging = false;
@@ -37,7 +37,7 @@ class UserProvider extends ChangeNotifier {
     String password = passwordController.text;
 
     if (email.isEmpty || password.isEmpty) return Left(EmptyCredFailures());
-    return signIn(FirebaseLoginRepo(FirebaseAuth.instance));
+    return signIn(SignInImpl(EmailLoginDataSource(FirebaseAuth.instance)));
   }
 
   Future<Either<Failure, UserModel>> signUp() async {
@@ -45,9 +45,9 @@ class UserProvider extends ChangeNotifier {
     String email = emailController.text;
     String password = passwordController.text;
     String name = nameController.text;
-    validateEmail();
-    validatePassword();
-    validateName();
+    validateEntry(EmailValidation(), emailController.text);
+    validateEntry(PasswordValidation(), passwordController.text);
+    validateEntry(NameValidation(), nameController.text);
 
     if (!_allowSignUp) {
       logging = false;
@@ -101,27 +101,17 @@ class UserProvider extends ChangeNotifier {
     _loggedButtonClicked = b;
   }
 
-  void validateEmail() {
+  void validateEntry(Validate validate, String value) {
     if (!_loggedButtonClicked) return;
 
-    String email = emailController.text;
-    emailError = EmailValidation().error(email);
-    notifyListeners();
-  }
-
-  void validatePassword() {
-    if (!_loggedButtonClicked) return;
-
-    String password = passwordController.text;
-    passwordError = PasswordValidation().error(password);
-    notifyListeners();
-  }
-
-  void validateName() {
-    if (!_loggedButtonClicked) return;
-
-    String name = nameController.text;
-    nameError = NameValidation().error(name);
+    String? error = validate.error(value);
+    if (validate is EmailValidation) {
+      emailError = error;
+    } else if (validate is NameValidation) {
+      nameError = error;
+    } else if (validate is PasswordValidation) {
+      passwordError = error;
+    }
     notifyListeners();
   }
 
