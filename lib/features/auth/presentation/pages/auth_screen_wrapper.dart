@@ -23,7 +23,7 @@ class AuthScreenWrapper extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       backgroundColor: colorTheme.backGround,
       extendBodyBehindAppBar: true,
-      appBar: loginAppBar(false),
+      appBar: loginAppBar(login),
       body: Stack(
         children: [
           GestureDetector(
