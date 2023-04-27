@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
-import 'dart:ui';
-
 import 'package:firebase_chat/core/navigation.dart';
 import 'package:firebase_chat/features/login/presentation/handlers/login_handlers.dart';
 import 'package:firebase_chat/features/login/presentation/pages/widgets/login_app_bar.dart';

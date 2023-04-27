@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../../data/datasourses/login_datasource.dart';
+import '../../data/datasourses/remote_datasource.dart';
 import '../../data/repositories/validation_impl.dart';
 
 class UserProvider extends ChangeNotifier {
