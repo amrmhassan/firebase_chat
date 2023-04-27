@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:firebase_chat/features/login/presentation/providers/user_provider.dart';
+import 'package:firebase_chat/features/auth/presentation/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -47,27 +47,29 @@ class _LoginFormTextFieldState extends State<LoginFormTextField> {
   @override
   Widget build(BuildContext context) {
     return Selector<UserProvider, bool>(
-      selector: (p0, p1) => p1.logging,
+      selector: (p0, p1) => p1.loggingIn,
       shouldRebuild: (previous, next) => previous != next,
-      builder: (context, value, child) => CustomTextField(
-        enabled: !value,
-        errorText: widget.errorText,
-        controller: widget.controller,
-        onChange: widget.onChange,
-        autoFocus: widget.autoFocus,
-        trailingIcon: passwordEye(),
-        textInputType: widget.inputType,
-        password: widget.password,
-        handleShowPassword: togglePasswordShown,
-        obscureText: !passwordShown && widget.password,
-        title: widget.hint,
-        color: Colors.red,
-        backgroundColor: colorTheme.textFieldBackgroundColor,
-        borderColor: Colors.transparent,
-        textStyle: h4TextStyleInactive,
-        borderRadius: BorderRadius.circular(mediumBorderRadius),
-        leadingIcon: child,
-      ),
+      builder: (context, value, child) {
+        return CustomTextField(
+          title: widget.hint,
+          enabled: !value,
+          errorText: widget.errorText,
+          controller: widget.controller,
+          onChange: widget.onChange,
+          autoFocus: widget.autoFocus,
+          textInputType: widget.inputType,
+          password: widget.password,
+          handleShowPassword: togglePasswordShown,
+          obscureText: !passwordShown && widget.password,
+          color: Colors.red,
+          backgroundColor: colorTheme.textFieldBackgroundColor,
+          borderColor: Colors.transparent,
+          textStyle: h4TextStyleInactive,
+          borderRadius: BorderRadius.circular(mediumBorderRadius),
+          leadingIcon: child,
+          trailingIcon: passwordEye(),
+        );
+      },
       child: Container(
         padding: EdgeInsets.all(
           smallPadding,

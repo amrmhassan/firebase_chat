@@ -1,4 +1,4 @@
-import 'package:firebase_chat/features/login/domain/repositories/login_failures.dart';
+import 'package:firebase_chat/features/auth/domain/repositories/login_failures.dart';
 
 abstract class Failure {}
 
@@ -36,6 +36,8 @@ class ErrorMapper {
       return 'Please check your fields';
     } else if (failure is EmailExistsWithDifferentProviderFailure) {
       return 'Email exists with different provider';
+    } else if (failure is EmailIsTempFailure) {
+      return 'This email isn\'t not valid';
     }
 
     return 'Unknown error';

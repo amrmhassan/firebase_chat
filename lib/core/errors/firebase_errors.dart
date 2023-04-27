@@ -1,7 +1,7 @@
 // ignore_for_file: unused_field
 
 import 'package:firebase_chat/core/errors/failure.dart';
-import 'package:firebase_chat/features/login/domain/repositories/login_failures.dart';
+import 'package:firebase_chat/features/auth/domain/repositories/login_failures.dart';
 
 class FirebaseErrors {
   final String _networkError = 'network-request-failed';

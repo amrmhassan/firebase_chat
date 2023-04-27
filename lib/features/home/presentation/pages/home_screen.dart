@@ -2,9 +2,9 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/core/types.dart';
-import 'package:firebase_chat/features/login/data/models/user_model.dart';
-import 'package:firebase_chat/features/login/presentation/pages/login_screen.dart';
-import 'package:firebase_chat/features/login/presentation/providers/user_provider.dart';
+import 'package:firebase_chat/features/auth/data/models/user_model.dart';
+import 'package:firebase_chat/features/auth/presentation/pages/login_screen.dart';
+import 'package:firebase_chat/features/auth/presentation/providers/user_provider.dart';
 import 'package:firebase_chat/utils/global_utils.dart';
 import 'package:firebase_chat/utils/providers_calls.dart';
 import 'package:flutter/material.dart';

@@ -30,3 +30,6 @@ class ValidationFailure implements Failure {}
 // facebook failures
 
 class InsufficientFacebookInfoFailure implements Failure {}
+
+// temp mail failure
+class EmailIsTempFailure implements Failure {}

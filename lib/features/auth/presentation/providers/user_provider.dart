@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/core/errors/failure.dart';
-import 'package:firebase_chat/features/login/data/models/user_model.dart';
-import 'package:firebase_chat/features/login/data/repositories/firebase_signup_repo.dart';
-import 'package:firebase_chat/features/login/data/repositories/signin_impl.dart';
-import 'package:firebase_chat/features/login/domain/repositories/login_failures.dart';
-import 'package:firebase_chat/features/login/domain/repositories/login_repo.dart';
-import 'package:firebase_chat/features/login/domain/repositories/login_validation.dart';
+import 'package:firebase_chat/features/auth/data/models/user_model.dart';
+import 'package:firebase_chat/features/auth/data/repositories/firebase_signup_impl.dart';
+import 'package:firebase_chat/features/auth/data/repositories/signin_impl.dart';
+import 'package:firebase_chat/features/auth/domain/repositories/login_failures.dart';
+import 'package:firebase_chat/features/auth/domain/repositories/login_repo.dart';
+import 'package:firebase_chat/features/auth/domain/repositories/login_validation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -19,7 +19,7 @@ class UserProvider extends ChangeNotifier {
   TextEditingController passwordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
 
-  bool logging = false;
+  bool loggingIn = false;
   UserModel? userModel;
 
   Future<Either<Failure, UserModel>> normalLogin() async {
@@ -28,7 +28,7 @@ class UserProvider extends ChangeNotifier {
     validateEntry(PasswordValidation(), passwordController.text);
 
     if (!_allowLogin) {
-      logging = false;
+      loggingIn = false;
       notifyListeners();
       return left(ValidationFailure());
     }
@@ -50,6 +50,9 @@ class UserProvider extends ChangeNotifier {
 
   Future<Either<Failure, UserModel>> signUp() async {
     _setLoggedButtonClicked(true);
+    loggingIn = true;
+    notifyListeners();
+
     String email = emailController.text;
     String password = passwordController.text;
     String name = nameController.text;
@@ -58,32 +61,32 @@ class UserProvider extends ChangeNotifier {
     validateEntry(NameValidation(), nameController.text);
 
     if (!_allowSignUp) {
-      logging = false;
+      loggingIn = false;
       notifyListeners();
       return left(ValidationFailure());
     }
 
     if (email.isEmpty || password.isEmpty || name.isEmpty) {
+      loggingIn = false;
+      notifyListeners();
       return Left(EmptyCredFailures());
     }
-    logging = true;
-    notifyListeners();
 
-    var res = FirebaseSignupRepo(FirebaseAuth.instance)
+    var res = await FirebaseSignupRepo(FirebaseAuth.instance)
         .signUpWithEmailPassword(email, password, name);
 
-    logging = false;
+    loggingIn = false;
     notifyListeners();
     return res;
   }
 
   Future<Either<Failure, UserModel>> signIn(LoginRepo repo) async {
-    logging = true;
+    loggingIn = true;
     notifyListeners();
 
     var res = await repo.login();
 
-    logging = false;
+    loggingIn = false;
     notifyListeners();
     return res;
   }

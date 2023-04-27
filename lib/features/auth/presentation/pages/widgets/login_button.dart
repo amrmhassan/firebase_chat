@@ -3,8 +3,8 @@
 import 'package:firebase_chat/core/errors/failure.dart';
 import 'package:firebase_chat/core/navigation.dart';
 import 'package:firebase_chat/core/types.dart';
-import 'package:firebase_chat/features/login/data/models/user_model.dart';
-import 'package:firebase_chat/features/login/presentation/providers/user_provider.dart';
+import 'package:firebase_chat/features/auth/data/models/user_model.dart';
+import 'package:firebase_chat/features/auth/presentation/providers/user_provider.dart';
 import 'package:firebase_chat/init/initiators.dart';
 import 'package:firebase_chat/utils/global_utils.dart';
 import 'package:firebase_chat/utils/providers_calls.dart';
@@ -27,10 +27,9 @@ class LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    logger.i('building');
     return PaddingWrapper(
       child: Selector<UserProvider, bool>(
-        selector: (p0, p1) => p1.logging,
+        selector: (p0, p1) => p1.loggingIn,
         shouldRebuild: (previous, next) => previous != next,
         builder: (BuildContext context, value, Widget? child) {
           return ButtonWrapper(
@@ -52,7 +51,6 @@ class LoginButton extends StatelessWidget {
   }
 
   void handleLoginButtonClick(BuildContext context) async {
-    logger.i('logging');
     if (login) {
       await handleLogin(context);
     } else {

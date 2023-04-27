@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:firebase_chat/core/errors/failure.dart';
-import 'package:firebase_chat/features/login/data/datasourses/remote_datasource.dart';
+import 'package:firebase_chat/features/auth/data/datasourses/remote_datasource.dart';
 import 'package:firebase_chat/utils/providers_calls.dart';
 import 'package:flutter/widgets.dart';
 

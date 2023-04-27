@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_chat/features/login/presentation/pages/login_screen.dart';
-import 'package:firebase_chat/features/login/presentation/pages/signup_screen.dart';
-import 'package:firebase_chat/features/login/presentation/providers/user_provider.dart';
+import 'package:firebase_chat/features/auth/presentation/pages/login_screen.dart';
+import 'package:firebase_chat/features/auth/presentation/pages/signup_screen.dart';
+import 'package:firebase_chat/features/auth/presentation/providers/user_provider.dart';
 import 'package:firebase_chat/features/theming/providers/theme_provider.dart';
 import 'package:firebase_chat/firebase_options.dart';
 import 'package:firebase_chat/init/initiators.dart';

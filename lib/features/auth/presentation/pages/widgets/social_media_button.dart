@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:firebase_chat/features/login/presentation/providers/user_provider.dart';
+import 'package:firebase_chat/features/auth/presentation/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +27,7 @@ class SocialMediaButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Selector<UserProvider, bool>(
-      selector: (p0, p1) => p1.logging,
+      selector: (p0, p1) => p1.loggingIn,
       shouldRebuild: (previous, next) => previous != next,
       builder: (context, value, child) => ButtonWrapper(
         onTap: onTap,
