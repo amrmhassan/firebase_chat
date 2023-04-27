@@ -14,6 +14,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'core/constants/sign_provider.dart';
 import 'features/home/presentation/pages/home_screen.dart';
 
 //
@@ -58,7 +59,16 @@ class MyApp extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return LoadingScreen();
             } else if (snapshot.data != null) {
-              return HomeScreen();
+              User user = FirebaseAuth.instance.currentUser!;
+              SignProvider? signProvider =
+                  SignProvidersGet.get(user.providerData.first.providerId);
+              bool verified =
+                  signProvider != SignProvider.email || user.emailVerified;
+              if (verified) {
+                return HomeScreen();
+              } else {
+                return EmailVerificationScreen();
+              }
             } else {
               return LoginScreen();
             }

@@ -114,14 +114,20 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
 
       if (!user.emailVerified) {
         Timer.periodic(Duration(seconds: 5), (timer) async {
-          await user.reload();
+          if (!mounted) {
+            return timer.cancel();
+          }
+          User? user = FirebaseAuth.instance.currentUser;
+          if (user != null) {
+            await user.reload();
+          } else {
+            timer.cancel();
+          }
 
           if (FirebaseAuth.instance.currentUser?.emailVerified ?? false) {
-            if (mounted) {
-              Providers.emailVPf(context).emailVerified();
-            }
+            Providers.emailVPf(context).emailVerified();
 
-            timer.cancel();
+            return timer.cancel();
           }
         });
       }

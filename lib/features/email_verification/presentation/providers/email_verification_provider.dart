@@ -10,7 +10,7 @@ import '../../../../fast_tools/constants/shared_pref_constants.dart';
 
 class EVerifyProvider extends ChangeNotifier {
   // this is the minimum time the user have to wait before asking for another verification email
-  static const Duration minimumForResend = Duration(minutes: 2);
+  static const Duration minimumForResend = Duration(minutes: 3);
   DateTime? _sentAt;
   bool emailSent = false;
 
@@ -65,5 +65,7 @@ class EVerifyProvider extends ChangeNotifier {
   Future<void> emailVerified() async {
     await SharedPrefHelper.removeKey(emailSentKey);
     await SharedPrefHelper.removeKey(lastEmailVerificationSentKey);
+    _sentAt = null;
+    emailSent = false;
   }
 }

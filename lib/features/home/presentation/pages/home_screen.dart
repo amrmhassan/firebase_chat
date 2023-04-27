@@ -44,7 +44,6 @@ class _HomeScreenState extends State<HomeScreen> {
           snackBarType: SnackBarType.error,
         );
       }
-      checkVerification();
     });
     super.initState();
   }
@@ -133,13 +132,5 @@ class _HomeScreenState extends State<HomeScreen> {
               child: CircularProgressIndicator(),
             ),
     );
-  }
-
-  void checkVerification() {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
-    if (!user.emailVerified) {
-      CNav.pushReplacementNamed(context, EmailVerificationScreen.routeName);
-    }
   }
 }

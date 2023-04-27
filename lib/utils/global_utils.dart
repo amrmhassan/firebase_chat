@@ -75,16 +75,25 @@ class GlobalUtils {
 
     final List<String> tokens = [];
     if (days != 0) {
-      tokens.add('$days d');
+      tokens.add('$days day${putS(days)}');
     }
     if (tokens.isNotEmpty || hours != 0) {
-      tokens.add('$hours h');
+      tokens.add('$hours hour${putS(hours)}');
     }
     if (tokens.isNotEmpty || minutes != 0) {
-      tokens.add('$minutes minutes');
+      tokens.add('$minutes minute${putS(minutes)}');
     }
-    tokens.add('${seconds < 10 ? '0$seconds' : seconds} seconds');
+    tokens
+        .add('${seconds < 10 ? '0$seconds' : seconds} second${putS(seconds)}');
 
     return tokens.join(' ');
+  }
+
+  static String putS(int n, [bool capital = false]) {
+    if (n > 1) {
+      return capital ? 'S' : 's';
+    } else {
+      return '';
+    }
   }
 }
