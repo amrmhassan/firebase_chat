@@ -37,7 +37,15 @@ class UserProvider extends ChangeNotifier {
     String password = passwordController.text;
 
     if (email.isEmpty || password.isEmpty) return Left(EmptyCredFailures());
-    return signIn(SignInImpl(EmailLoginDataSource(FirebaseAuth.instance)));
+    return signIn(
+      SignInImpl(
+        EmailLoginDataSource(
+          FirebaseAuth.instance,
+          email,
+          password,
+        ),
+      ),
+    );
   }
 
   Future<Either<Failure, UserModel>> signUp() async {
