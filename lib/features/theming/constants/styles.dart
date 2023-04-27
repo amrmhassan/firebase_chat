@@ -83,7 +83,7 @@ TextStyle h4LiteTextStyle = TextStyle(
 TextStyle h4LightTextStyle = TextStyle(
   fontSize: h4TextSize,
   fontFamily: 'Cairo',
-  color: TextColors.kActiveTextColor,
+  color: Colors.white,
 );
 
 //@ h5 text styles

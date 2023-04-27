@@ -24,6 +24,7 @@ dependencies:
   copy_with_extension_gen: ^5.0.2
   dartz: ^0.10.1
   http: ^0.13.5
+  shared_preferences: ^2.1.0
 
 
 dev_dependencies:

@@ -6,9 +6,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/core/constants/sign_provider.dart';
 import 'package:firebase_chat/core/types.dart';
 import 'package:firebase_chat/features/auth/presentation/pages/login_screen.dart';
+import 'package:firebase_chat/features/email_verification/presentation/pages/email_verification_screen.dart';
 import 'package:firebase_chat/utils/global_utils.dart';
 import 'package:firebase_chat/utils/providers_calls.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../core/navigation.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/HomeScreen';
@@ -136,13 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
     if (!user.emailVerified) {
-      Timer.periodic(Duration(seconds: 5), (timer) async {
-        await user.reload();
-
-        if (FirebaseAuth.instance.currentUser?.emailVerified ?? false) {
-          timer.cancel();
-        }
-      });
+      CNav.pushReplacementNamed(context, EmailVerificationScreen.routeName);
     }
   }
 }

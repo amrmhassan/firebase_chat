@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/features/auth/presentation/pages/login_screen.dart';
 import 'package:firebase_chat/features/auth/presentation/pages/signup_screen.dart';
 import 'package:firebase_chat/features/auth/presentation/providers/user_provider.dart';
+import 'package:firebase_chat/features/email_verification/presentation/pages/email_verification_screen.dart';
+import 'package:firebase_chat/features/email_verification/presentation/providers/email_verification_provider.dart';
 import 'package:firebase_chat/features/theming/providers/theme_provider.dart';
 import 'package:firebase_chat/firebase_options.dart';
 import 'package:firebase_chat/init/initiators.dart';
@@ -32,6 +34,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
         ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => EVerifyProvider()),
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
@@ -39,10 +42,10 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           textTheme: TextTheme(
             bodyLarge: TextStyle(
-              color: Colors.white,
+              color: Color.fromARGB(255, 42, 35, 77),
             ),
             bodyMedium: TextStyle(
-              color: Colors.white,
+              color: Color.fromARGB(255, 42, 35, 77),
             ),
           ),
         ),
@@ -66,6 +69,7 @@ class MyApp extends StatelessWidget {
           LoginScreen.routeName: (ctx) => LoginScreen(),
           SignUpScreen.routeName: (ctx) => SignUpScreen(),
           HomeScreen.routeName: (ctx) => HomeScreen(),
+          EmailVerificationScreen.routeName: (ctx) => EmailVerificationScreen(),
         },
       ),
     );
