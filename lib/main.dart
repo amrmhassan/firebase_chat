@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 
 import 'init/runtime_variables.dart';
 
-//
+// flutter packages pub run build_runner build --delete-conflicting-outputs
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

@@ -1,15 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/core/constants/sign_provider.dart';
 import 'package:firebase_chat/transformers/models_fields.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../../transformers/facebook_photo.dart';
 
+part 'user_model.g.dart';
+
+@HiveType(typeId: 0)
 class UserModel {
+  @HiveField(0)
   final String uid;
+  @HiveField(1)
   final String email;
+  @HiveField(2)
   final String name;
+  @HiveField(3)
   final String? accessToken;
+  @HiveField(4)
   final String provider;
+  @HiveField(5)
   final String? providerId;
 
   const UserModel({
