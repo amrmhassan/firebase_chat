@@ -6,6 +6,7 @@ class CustomColors {
   //? material colors
   static const Color kBackgroundColor = Color(0xffffffff);
   static const Color kCardBackgroundColor = Color(0xffF5F7F9);
+  static const Color kCardBackgroundColorDark = Color(0xff878F7B);
   static const Color kLightCardBackgroundColor = Color(0xff474B63);
   static const Color kInactiveColor = Color(0xff9A9CA3);
   static const Color kBlueColor = Color(0xff157AFE);

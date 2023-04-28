@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../features/theming/constants/sizes.dart';
-
 class VLine extends StatelessWidget {
   final double? thickness;
   final Color? color;
