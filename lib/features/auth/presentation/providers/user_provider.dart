@@ -85,6 +85,11 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
 
     var res = await repo.login();
+    var data = res.fold((l) => l, (r) => r);
+    if (data is UserModel) {
+      userModel = data;
+      notifyListeners();
+    }
 
     loggingIn = false;
     notifyListeners();

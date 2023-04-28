@@ -1,4 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_chat/core/constants/sign_provider.dart';
 import 'package:firebase_chat/transformers/models_fields.dart';
+
+import '../../../../transformers/facebook_photo.dart';
 
 class UserModel {
   final String uid;
@@ -37,5 +41,18 @@ class UserModel {
       ModelsFields.provider: provider,
       ModelsFields.providerId: providerId,
     };
+  }
+
+  SignProvider get signProvider => SignProvidersGet.get(provider)!;
+
+  Future<String?> get photoUrl async {
+    if (signProvider == SignProvider.email) {
+      return FirebaseAuth.instance.currentUser?.photoURL;
+    } else if (signProvider == SignProvider.facebook) {
+      return FbPhotoTransformer.getPhotoUrl(accessToken, providerId);
+    } else if (signProvider == SignProvider.google) {
+      return FirebaseAuth.instance.currentUser?.photoURL;
+    }
+    return null;
   }
 }

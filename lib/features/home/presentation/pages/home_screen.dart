@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/core/constants/sign_provider.dart';
@@ -10,9 +9,6 @@ import 'package:firebase_chat/features/auth/presentation/pages/login_screen.dart
 import 'package:firebase_chat/utils/global_utils.dart';
 import 'package:firebase_chat/utils/providers_calls.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-
-import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/HomeScreen';
@@ -82,19 +78,16 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 SizedBox(width: double.infinity),
                 if (user.photoURL != null)
-                  FutureBuilder<Response>(
-                      future: http.get(Uri.parse(
-                          'https://graph.facebook.com/1000694057980340/picture?type=large&redirect=false&access_token=EAADZAq1gs3y0BAKXHlbhGnj10Pg9sg7p9h0HYH1eUEzsd4z8Sl5zoI0OZC33J3ZCb3B6txGqfjJhnWDohig2q4PJ40OvrKCu0MuIwbZClMyhJMH70oPsfzj5q7AZBbinWvzCVbqRWghIrQbdVt2rDCL1P0IH70oZBYSG49U92vNUjZBIGOuyBVU5MZBQuoLcD6EoZCcAtueSt8Jc7ZBsjygGYBvbG5u5RTnLzbZAoudZCXyVtTbtDOQvyS8ZA')),
+                  FutureBuilder<String?>(
+                      future: Providers.userP(context).userModel?.photoUrl,
                       builder: (context, snapshot) {
                         if (snapshot.data == null) {
                           return SizedBox();
                         }
-                        var body = json.decode(snapshot.data!.body);
-                        String imageURL = body['data']['url'];
-                        return Image.network(imageURL);
+                        return Image.network(snapshot.data!);
                       }),
-                Text(
-                  user.uid,
+                SelectableText(
+                  (Providers.userP(context).userModel?.photoUrl).toString(),
                   style: TextStyle(
                     color: Colors.black,
                   ),
