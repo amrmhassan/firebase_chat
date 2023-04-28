@@ -6,6 +6,7 @@ class VLine extends StatelessWidget {
   final double? thickness;
   final Color? color;
   final double? borderRadius;
+  final double? heightFactor;
   final double? height;
 
   const VLine({
@@ -13,17 +14,21 @@ class VLine extends StatelessWidget {
     this.color,
     this.thickness,
     this.borderRadius,
+    this.heightFactor,
     this.height,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: thickness ?? 2,
-      height: height ?? kVPad,
-      decoration: BoxDecoration(
-        color: color ?? Colors.white,
-        borderRadius: BorderRadius.circular(borderRadius ?? 0),
+    return FractionallySizedBox(
+      heightFactor: heightFactor ?? 1,
+      child: Container(
+        width: thickness ?? 2,
+        height: height,
+        decoration: BoxDecoration(
+          color: color ?? Colors.white,
+          borderRadius: BorderRadius.circular(borderRadius ?? 0),
+        ),
       ),
     );
   }

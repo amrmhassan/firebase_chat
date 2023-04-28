@@ -1,11 +1,17 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, prefer_const_literals_to_create_immutables
 
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/core/constants/sign_provider.dart';
 import 'package:firebase_chat/core/types.dart';
+import 'package:firebase_chat/fast_tools/widgets/h_space.dart';
+import 'package:firebase_chat/fast_tools/widgets/v_line.dart';
+import 'package:firebase_chat/features/auth/data/models/user_model.dart';
 import 'package:firebase_chat/features/auth/presentation/pages/login_screen.dart';
+import 'package:firebase_chat/features/theming/constants/sizes.dart';
+import 'package:firebase_chat/features/theming/constants/styles.dart';
+import 'package:firebase_chat/features/theming/theme_calls.dart';
 import 'package:firebase_chat/utils/global_utils.dart';
 import 'package:firebase_chat/utils/providers_calls.dart';
 import 'package:flutter/material.dart';
@@ -48,29 +54,86 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    User user = FirebaseAuth.instance.currentUser!;
-    SignProvider? signProvider =
-        SignProvidersGet.get(user.providerData.first.providerId);
-    bool verified = signProvider != SignProvider.email || user.emailVerified;
+    // User user = FirebaseAuth.instance.currentUser!;
+    // SignProvider? signProvider =
+    //     SignProvidersGet.get(user.providerData.first.providerId);
+    // bool verified = signProvider != SignProvider.email || user.emailVerified;
+    UserModel? userModel = Providers.userP(context).userModel;
+    if (userModel == null) return SizedBox();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Screen'),
-        actions: [
-          userLoaded
-              ? IconButton(
-                  onPressed: () async {
-                    await Providers.userPf(context).logout();
-                    // Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.logout,
+        title: Row(
+          children: [
+            FutureBuilder<String?>(
+                future: userModel.photoUrl,
+                builder: (context, snapshot) {
+                  if (snapshot.data == null) {
+                    return SizedBox();
+                  }
+                  return Container(
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(1000),
+                    ),
+                    child: Image.network(
+                      snapshot.data!,
+                      width: largeIconSize,
+                      height: largeIconSize,
+                      alignment: Alignment.topCenter,
+                    ),
+                  );
+                }),
+            HSpace(),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    userModel.name,
+                    style: h3TextStyle,
                   ),
-                )
-              : IconButton(
-                  onPressed: () {},
-                  icon: CircularProgressIndicator(),
-                ),
+                  Text(
+                    userModel.email,
+                    style: h4TextStyleInactive,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          Row(
+            children: [
+              VLine(
+                color: colorTheme.kInactiveColor,
+                thickness: 1,
+                heightFactor: .5,
+              ),
+              userLoaded
+                  ? IconButton(
+                      onPressed: () async {
+                        // await Providers.userPf(context).logout();
+                        // Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.search,
+                      ),
+                    )
+                  : IconButton(
+                      onPressed: () {},
+                      icon: SizedBox(
+                        height: mediumIconSize,
+                        width: mediumIconSize,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 1.4,
+                        ),
+                      ),
+                    ),
+              HSpace(factor: .5),
+            ],
+          ),
         ],
       ),
       body: userLoaded
@@ -78,59 +141,12 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(width: double.infinity),
-                if (user.photoURL != null)
-                  FutureBuilder<String?>(
-                      future: Providers.userP(context).userModel?.photoUrl,
-                      builder: (context, snapshot) {
-                        if (snapshot.data == null) {
-                          return SizedBox();
-                        }
-                        return Image.network(snapshot.data!);
-                      }),
-                Text(
-                  user.providerData.first.email ?? 'No email',
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  SignProvidersGet.get(user.providerData.first.providerId)
-                      .toString(),
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  'verified $verified',
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-                ...user.providerData.map(
-                  (e) => Text(
-                    e.providerId,
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-                Text(
-                  user.displayName ?? 'No name',
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-                if (!verified)
-                  ElevatedButton(
-                    onPressed: () {
-                      user.sendEmailVerification();
-                    },
-                    child: Text('verify'),
-                  ),
               ],
             )
           : Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                strokeWidth: 1.7,
+              ),
             ),
     );
   }

@@ -163,6 +163,7 @@ class UserProvider extends ChangeNotifier {
   Future<void> loadCurrentUserInfo() async {
     try {
       var box = await HiveBox.currentUser;
+      if (box.values.isEmpty) return;
       var data = box.values.first as UserModel;
       userModel = data;
       notifyListeners();
