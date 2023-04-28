@@ -1,11 +1,9 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/core/errors/failure.dart';
 import 'package:firebase_chat/core/navigation.dart';
 import 'package:firebase_chat/core/types.dart';
 import 'package:firebase_chat/features/auth/data/models/user_model.dart';
-import 'package:firebase_chat/features/auth/data/repositories/normal_login_impl.dart';
 import 'package:firebase_chat/features/auth/presentation/providers/user_provider.dart';
 import 'package:firebase_chat/init/runtime_variables.dart';
 import 'package:firebase_chat/utils/global_utils.dart';
@@ -18,7 +16,6 @@ import '../../../../../fast_tools/widgets/padding_wrapper.dart';
 import '../../../../theming/constants/sizes.dart';
 import '../../../../theming/constants/styles.dart';
 import '../../../../theming/theme_calls.dart';
-import '../../../data/repositories/firebase_signup_impl.dart';
 
 class LoginButton extends StatelessWidget {
   final bool login;
@@ -65,7 +62,7 @@ class LoginButton extends StatelessWidget {
   }
 
   Future<dynamic> handleLogin(BuildContext context) async {
-    var res = await Providers.userPf(context).auth(NormalLoginImpl());
+    var res = await Providers.userPf(context).auth(AuthType.emailLogin);
     var data = res.fold((l) => l, (r) => r);
     if (data is Failure) {
       logger.e(data);
@@ -85,8 +82,7 @@ class LoginButton extends StatelessWidget {
   }
 
   Future<dynamic> handleSignup(BuildContext context) async {
-    var res = await Providers.userPf(context)
-        .auth(FirebaseSignupRepo(FirebaseAuth.instance));
+    var res = await Providers.userPf(context).auth(AuthType.signup);
     var data = res.fold((l) => l, (r) => r);
     if (data is Failure) {
       logger.e(data);
