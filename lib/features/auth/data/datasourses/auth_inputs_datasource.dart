@@ -5,11 +5,25 @@ import '../repositories/validation_impl.dart';
 
 class AuthInputsDatasource {
   final VoidCallback notifyListeners;
-  AuthInputsDatasource(this.notifyListeners);
+  AuthInputsDatasource(this.notifyListeners) {
+    runAutoValidators();
+  }
 
   final TextEditingController mailController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController passController = TextEditingController();
+
+  void runAutoValidators() {
+    mailController.addListener(() {
+      validateEntry(EmailValidation());
+    });
+    nameController.addListener(() {
+      validateEntry(NameValidation());
+    });
+    passController.addListener(() {
+      validateEntry(PasswordValidation());
+    });
+  }
 
   String? emailError;
   String? nameError;

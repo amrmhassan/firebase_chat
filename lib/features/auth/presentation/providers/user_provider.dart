@@ -170,6 +170,4 @@ class UserProvider extends ChangeNotifier {
       logger.e(e);
     }
   }
-
-  //# validation
 }
