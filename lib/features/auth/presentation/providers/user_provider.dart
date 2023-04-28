@@ -2,12 +2,12 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/core/errors/failure.dart';
 import 'package:firebase_chat/core/hive/hive_helper.dart';
+import 'package:firebase_chat/features/auth/data/datasourses/auth_inputs_datasource.dart';
 import 'package:firebase_chat/features/auth/data/models/user_model.dart';
 import 'package:firebase_chat/features/auth/data/repositories/signin_impl.dart';
 import 'package:firebase_chat/features/auth/data/repositories/signup_impl.dart';
 import 'package:firebase_chat/features/auth/domain/repositories/login_failures.dart';
 import 'package:firebase_chat/features/auth/data/piping/auth_piping.dart';
-import 'package:firebase_chat/features/auth/domain/repositories/login_validation.dart';
 import 'package:firebase_chat/init/runtime_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -24,9 +24,10 @@ enum AuthType {
 }
 
 class UserProvider extends ChangeNotifier {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
+  late AuthInputsDatasource authInputsDS;
+  UserProvider() {
+    authInputsDS = AuthInputsDatasource(notifyListeners);
+  }
 
   bool loggingIn = false;
   UserModel? userModel;
@@ -38,7 +39,7 @@ class UserProvider extends ChangeNotifier {
 
   // the repos available now are LoginRepo, SignUpRepo or NormalLoginImpl
   Future<Either<Failure, UserModel>> auth(AuthType authType) async {
-    _setLoggedButtonClicked(true);
+    authInputsDS.setLoggedButtonClicked(true);
     loggingIn = true;
     notifyListeners();
 
@@ -72,18 +73,18 @@ class UserProvider extends ChangeNotifier {
 
   //# user auth related methods
   Future<Either<Failure, UserModel>> _normalLogin() async {
-    _setLoggedButtonClicked(true);
-    validateEntry(EmailValidation(), emailController.text);
-    validateEntry(PasswordValidation(), passwordController.text);
+    authInputsDS.setLoggedButtonClicked(true);
+    authInputsDS.validateEntry(EmailValidation());
+    authInputsDS.validateEntry(PasswordValidation());
 
-    if (!_allowLogin) {
+    if (!authInputsDS.allowLogin) {
       loggingIn = false;
       notifyListeners();
       return left(ValidationFailure());
     }
 
-    String email = emailController.text;
-    String password = passwordController.text;
+    String email = authInputsDS.mailController.text;
+    String password = authInputsDS.passController.text;
 
     if (email.isEmpty || password.isEmpty) return Left(EmptyCredFailures());
     return _signIn(
@@ -98,14 +99,14 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<Either<Failure, UserModel>> _signUp() async {
-    String email = emailController.text;
-    String password = passwordController.text;
-    String name = nameController.text;
-    validateEntry(EmailValidation(), emailController.text);
-    validateEntry(PasswordValidation(), passwordController.text);
-    validateEntry(NameValidation(), nameController.text);
+    String email = authInputsDS.mailController.text;
+    String password = authInputsDS.passController.text;
+    String name = authInputsDS.nameController.text;
+    authInputsDS.validateEntry(EmailValidation());
+    authInputsDS.validateEntry(PasswordValidation());
+    authInputsDS.validateEntry(NameValidation());
 
-    if (!_allowSignUp) {
+    if (!authInputsDS.allowSignUp) {
       loggingIn = false;
       notifyListeners();
       return Left(ValidationFailure());
@@ -136,7 +137,7 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<void> logout() async {
-    _setLoggedButtonClicked(false);
+    authInputsDS.setLoggedButtonClicked(false);
     final GoogleSignIn googleSignIn = GoogleSignIn();
     await FirebaseAuth.instance.signOut();
     await googleSignIn.signOut();
@@ -171,35 +172,4 @@ class UserProvider extends ChangeNotifier {
   }
 
   //# validation
-  String? emailError;
-  String? nameError;
-  String? passwordError;
-
-  bool _loggedButtonClicked = false;
-
-  void _setLoggedButtonClicked(bool b) {
-    _loggedButtonClicked = b;
-  }
-
-  void validateEntry(Validate validate, String value) {
-    if (!_loggedButtonClicked) return;
-
-    String? error = validate.error(value);
-    if (validate is EmailValidation) {
-      emailError = error;
-    } else if (validate is NameValidation) {
-      nameError = error;
-    } else if (validate is PasswordValidation) {
-      passwordError = error;
-    }
-    notifyListeners();
-  }
-
-  bool get _allowLogin {
-    return emailError == null && passwordError == null;
-  }
-
-  bool get _allowSignUp {
-    return emailError == null && passwordError == null && nameError == null;
-  }
 }

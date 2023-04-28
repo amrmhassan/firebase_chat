@@ -40,11 +40,11 @@ class SignUpScreen extends StatelessWidget {
           ),
           VSpace(),
           Selector<UserProvider, String?>(
-            selector: (p0, p1) => p1.emailError,
+            selector: (p0, p1) => p1.authInputsDS.emailError,
             shouldRebuild: (previous, next) => previous != next,
             builder: (context, value, child) => LoginFormTextField(
               errorText: value,
-              controller: Providers.userPf(context).emailController,
+              controller: Providers.userPf(context).authInputsDS.mailController,
               hint: 'you@example.com',
               iconPath: 'assets/svg/email.svg',
               inputType: TextInputType.emailAddress,
@@ -52,11 +52,11 @@ class SignUpScreen extends StatelessWidget {
           ),
           VSpace(factor: .5),
           Selector<UserProvider, String?>(
-            selector: (p0, p1) => p1.nameError,
+            selector: (p0, p1) => p1.authInputsDS.nameError,
             shouldRebuild: (previous, next) => previous != next,
             builder: (context, value, child) => LoginFormTextField(
               errorText: value,
-              controller: Providers.userPf(context).nameController,
+              controller: Providers.userPf(context).authInputsDS.nameController,
               hint: 'Your name',
               iconPath: 'assets/svg/user.svg',
               inputType: TextInputType.text,
@@ -64,11 +64,11 @@ class SignUpScreen extends StatelessWidget {
           ),
           VSpace(factor: .5),
           Selector<UserProvider, String?>(
-            selector: (p0, p1) => p1.passwordError,
+            selector: (p0, p1) => p1.authInputsDS.passwordError,
             shouldRebuild: (previous, next) => previous != next,
             builder: (context, value, child) => LoginFormTextField(
               errorText: value,
-              controller: Providers.userPf(context).passwordController,
+              controller: Providers.userPf(context).authInputsDS.passController,
               hint: 'At least 8 characters',
               iconPath: 'assets/svg/lock.svg',
               inputType: TextInputType.visiblePassword,
