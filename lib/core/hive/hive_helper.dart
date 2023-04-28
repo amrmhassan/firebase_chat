@@ -5,10 +5,10 @@ class HiveBox {
     return Hive.openBox(name);
   }
 
-  static Future<Box> get allowedDevices =>
-      Hive.openBox(_HiveBoxesNames.downloadTasks);
+  static Future<Box> get currentUser =>
+      Hive.openBox(_HiveBoxesNames.currentUser);
 }
 
 class _HiveBoxesNames {
-  static const String downloadTasks = 'downloadTasksBoxName';
+  static const String currentUser = 'currentUser';
 }

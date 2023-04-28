@@ -1,12 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/core/errors/failure.dart';
+import 'package:firebase_chat/core/hive/hive_helper.dart';
 import 'package:firebase_chat/features/auth/data/models/user_model.dart';
 import 'package:firebase_chat/features/auth/data/repositories/firebase_signup_impl.dart';
 import 'package:firebase_chat/features/auth/data/repositories/signin_impl.dart';
 import 'package:firebase_chat/features/auth/domain/repositories/login_failures.dart';
 import 'package:firebase_chat/features/auth/domain/repositories/login_repo.dart';
 import 'package:firebase_chat/features/auth/domain/repositories/login_validation.dart';
+import 'package:firebase_chat/init/runtime_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -77,6 +79,12 @@ class UserProvider extends ChangeNotifier {
 
     loggingIn = false;
     notifyListeners();
+    var data = res.fold((l) => l, (r) => r);
+    if (data is UserModel) {
+      userModel = data;
+      notifyListeners();
+      await _saveCurrentUserInfo(userModel!);
+    }
     return res;
   }
 
@@ -89,11 +97,33 @@ class UserProvider extends ChangeNotifier {
     if (data is UserModel) {
       userModel = data;
       notifyListeners();
+      await _saveCurrentUserInfo(userModel!);
     }
 
     loggingIn = false;
     notifyListeners();
     return res;
+  }
+
+  Future<void> _saveCurrentUserInfo(UserModel userModel) async {
+    var box = await HiveBox.currentUser;
+    await box.put(userModel.uid, userModel);
+  }
+
+  Future<void> _deleteCurrentUserInfo() async {
+    var box = await HiveBox.currentUser;
+    await box.clear();
+  }
+
+  Future<void> loadCurrentUserInfo() async {
+    try {
+      var box = await HiveBox.currentUser;
+      var data = box.values.first as UserModel;
+      userModel = data;
+      notifyListeners();
+    } catch (e) {
+      logger.e(e);
+    }
   }
 
   Future<void> logout() async {
@@ -104,6 +134,9 @@ class UserProvider extends ChangeNotifier {
 
     // facebook logout
     await FacebookAuth.instance.logOut();
+
+    // delete saved user data
+    await _deleteCurrentUserInfo();
   }
 
   //# validation

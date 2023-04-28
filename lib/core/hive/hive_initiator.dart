@@ -4,7 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 class HiveInitiator {
   Future<void> setup() async {
     await Hive.initFlutter();
-    _registerAdapters();
+    await _registerAdapters();
   }
 
   Future<void> _registerAdapters() async {
