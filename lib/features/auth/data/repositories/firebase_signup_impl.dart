@@ -10,7 +10,7 @@ import 'package:firebase_chat/transformers/apis.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/firebase_errors.dart';
-import '../../../../init/initiators.dart';
+import '../../../../init/runtime_variables.dart';
 import '../../domain/repositories/login_failures.dart';
 import '../models/temp_mail_model.dart';
 

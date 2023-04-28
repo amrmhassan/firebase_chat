@@ -6,7 +6,7 @@ import 'package:firebase_chat/utils/providers_calls.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../../../core/types.dart';
-import '../../../../init/initiators.dart';
+import '../../../../init/runtime_variables.dart';
 import '../../../../utils/global_utils.dart';
 import '../../data/models/user_model.dart';
 import '../../data/repositories/signin_impl.dart';

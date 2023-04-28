@@ -2,7 +2,7 @@ import 'package:firebase_chat/features/theming/theme_calls.dart';
 import 'package:flutter/material.dart';
 
 import '../core/types.dart';
-import '../init/initiators.dart';
+import '../init/runtime_variables.dart';
 
 class GlobalUtils {
   static void showSnackBar({

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../init/initiators.dart';
+import '../../../init/runtime_variables.dart';
 import '../color_theme.dart';
 import '../size_theme.dart';
 
