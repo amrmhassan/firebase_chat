@@ -6,7 +6,6 @@ import 'package:firebase_chat/core/navigation.dart';
 import 'package:firebase_chat/core/types.dart';
 import 'package:firebase_chat/features/auth/data/models/user_model.dart';
 import 'package:firebase_chat/features/auth/data/repositories/normal_login_impl.dart';
-import 'package:firebase_chat/features/auth/domain/repositories/signup_repo.dart';
 import 'package:firebase_chat/features/auth/presentation/providers/user_provider.dart';
 import 'package:firebase_chat/init/runtime_variables.dart';
 import 'package:firebase_chat/utils/global_utils.dart';
