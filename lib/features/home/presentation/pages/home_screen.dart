@@ -87,12 +87,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
                         return Image.network(snapshot.data!);
                       }),
-                SelectableText(
-                  (Providers.userP(context).userModel?.photoUrl).toString(),
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
                 Text(
                   user.providerData.first.email ?? 'No email',
                   style: TextStyle(

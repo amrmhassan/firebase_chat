@@ -33,3 +33,6 @@ class InsufficientFacebookInfoFailure implements Failure {}
 
 // temp mail failure
 class EmailIsTempFailure implements Failure {}
+
+// no auth method provided
+class NoAuthMethodProvidedFailure implements Failure {}

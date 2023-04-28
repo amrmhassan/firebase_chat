@@ -4,10 +4,12 @@ import 'package:firebase_chat/core/errors/failure.dart';
 import 'package:firebase_chat/core/hive/hive_helper.dart';
 import 'package:firebase_chat/features/auth/data/models/user_model.dart';
 import 'package:firebase_chat/features/auth/data/repositories/firebase_signup_impl.dart';
+import 'package:firebase_chat/features/auth/data/repositories/normal_login_impl.dart';
 import 'package:firebase_chat/features/auth/data/repositories/signin_impl.dart';
 import 'package:firebase_chat/features/auth/domain/repositories/login_failures.dart';
 import 'package:firebase_chat/features/auth/domain/repositories/login_repo.dart';
 import 'package:firebase_chat/features/auth/domain/repositories/login_validation.dart';
+import 'package:firebase_chat/features/auth/domain/repositories/signup_repo.dart';
 import 'package:firebase_chat/init/runtime_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -15,6 +17,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../data/datasourses/remote_datasource.dart';
 import '../../data/repositories/validation_impl.dart';
+import '../../domain/repositories/auth_repo.dart';
 
 class UserProvider extends ChangeNotifier {
   TextEditingController emailController = TextEditingController();
@@ -24,7 +27,45 @@ class UserProvider extends ChangeNotifier {
   bool loggingIn = false;
   UserModel? userModel;
 
-  Future<Either<Failure, UserModel>> normalLogin() async {
+  // i should have a function here that accepts an Auth  class
+  // auth(AuthProvider) this auth provider might be loginRepo class or signUpRepo class
+  // and this function will just return either a failure or a userModel
+  // this is just to unify data sources and apply the pipelines concept
+
+  // the repos available now are LoginRepo, SignUpRepo or NormalLoginImpl
+  Future<Either<Failure, UserModel>> auth(AuthRepo authRepo) async {
+    _setLoggedButtonClicked(true);
+    loggingIn = true;
+    notifyListeners();
+
+    // this repo must be at first because it's already a kind of LoginRepo
+    late Either<Failure, UserModel> res;
+    if (authRepo is NormalLoginImpl) {
+      res = await _normalLogin();
+    } else if (authRepo is LoginRepo) {
+      res = await _signIn(authRepo);
+    } else if (authRepo is SignUpRepo) {
+      res = await _signUp();
+      // the remaining one is the normal login repo
+    } else {
+      res = Left(NoAuthMethodProvidedFailure());
+    }
+
+    loggingIn = false;
+    notifyListeners();
+
+    var data = res.fold((l) => l, (r) => r);
+    if (data is UserModel) {
+      userModel = data;
+      notifyListeners();
+      await _saveCurrentUserInfo(userModel!);
+    }
+
+    return res;
+  }
+
+  //# user auth related methods
+  Future<Either<Failure, UserModel>> _normalLogin() async {
     _setLoggedButtonClicked(true);
     validateEntry(EmailValidation(), emailController.text);
     validateEntry(PasswordValidation(), passwordController.text);
@@ -39,7 +80,7 @@ class UserProvider extends ChangeNotifier {
     String password = passwordController.text;
 
     if (email.isEmpty || password.isEmpty) return Left(EmptyCredFailures());
-    return signIn(
+    return _signIn(
       SignInImpl(
         EmailLoginDataSource(
           FirebaseAuth.instance,
@@ -50,11 +91,7 @@ class UserProvider extends ChangeNotifier {
     );
   }
 
-  Future<Either<Failure, UserModel>> signUp() async {
-    _setLoggedButtonClicked(true);
-    loggingIn = true;
-    notifyListeners();
-
+  Future<Either<Failure, UserModel>> _signUp() async {
     String email = emailController.text;
     String password = passwordController.text;
     String name = nameController.text;
@@ -77,34 +114,29 @@ class UserProvider extends ChangeNotifier {
     var res = await FirebaseSignupRepo(FirebaseAuth.instance)
         .signUpWithEmailPassword(email, password, name);
 
-    loggingIn = false;
-    notifyListeners();
-    var data = res.fold((l) => l, (r) => r);
-    if (data is UserModel) {
-      userModel = data;
-      notifyListeners();
-      await _saveCurrentUserInfo(userModel!);
-    }
     return res;
   }
 
-  Future<Either<Failure, UserModel>> signIn(LoginRepo repo) async {
-    loggingIn = true;
-    notifyListeners();
-
+  Future<Either<Failure, UserModel>> _signIn(LoginRepo repo) async {
     var res = await repo.login();
-    var data = res.fold((l) => l, (r) => r);
-    if (data is UserModel) {
-      userModel = data;
-      notifyListeners();
-      await _saveCurrentUserInfo(userModel!);
-    }
 
-    loggingIn = false;
-    notifyListeners();
     return res;
   }
 
+  Future<void> logout() async {
+    _setLoggedButtonClicked(false);
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    await FirebaseAuth.instance.signOut();
+    await googleSignIn.signOut();
+
+    // facebook logout
+    await FacebookAuth.instance.logOut();
+
+    // delete saved user data
+    await _deleteCurrentUserInfo();
+  }
+
+  //# saved user info related methods
   Future<void> _saveCurrentUserInfo(UserModel userModel) async {
     var box = await HiveBox.currentUser;
     await box.put(userModel.uid, userModel);
@@ -124,19 +156,6 @@ class UserProvider extends ChangeNotifier {
     } catch (e) {
       logger.e(e);
     }
-  }
-
-  Future<void> logout() async {
-    _setLoggedButtonClicked(false);
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-    await FirebaseAuth.instance.signOut();
-    await googleSignIn.signOut();
-
-    // facebook logout
-    await FacebookAuth.instance.logOut();
-
-    // delete saved user data
-    await _deleteCurrentUserInfo();
   }
 
   //# validation

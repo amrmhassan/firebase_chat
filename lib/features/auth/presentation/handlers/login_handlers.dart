@@ -13,8 +13,10 @@ import '../../data/repositories/signin_impl.dart';
 
 class LoginHandlers {
   static Future<void> googleLogin(BuildContext context) async {
+    // var res = await Providers.userPf(context)
+    //     .signIn(SignInImpl(GoogleLoginDataSource()));
     var res = await Providers.userPf(context)
-        .signIn(SignInImpl(GoogleLoginDataSource()));
+        .auth(SignInImpl(GoogleLoginDataSource()));
     var data = res.fold((l) => l, (r) => r);
     if (data is Failure) {
       logger.e(data);
@@ -34,7 +36,7 @@ class LoginHandlers {
 
   static Future<dynamic> facebookLogin(BuildContext context) async {
     var res = await Providers.userPf(context)
-        .signIn(SignInImpl(FacebookLoginDataSource()));
+        .auth(SignInImpl(FacebookLoginDataSource()));
     var data = res.fold((l) => l, (r) => r);
     if (data is Failure) {
       logger.e(data);
