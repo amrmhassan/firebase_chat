@@ -1,17 +1,18 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously, prefer_const_literals_to_create_immutables
 
-import 'package:firebase_chat/core/navigation.dart';
 import 'package:firebase_chat/fast_tools/widgets/screen_wrapper.dart';
 import 'package:firebase_chat/fast_tools/widgets/v_space.dart';
-import 'package:firebase_chat/features/auth/data/models/user_model.dart';
+import 'package:firebase_chat/features/search/data/models/search_result_model.dart';
+import 'package:firebase_chat/features/search/presentation/pages/search_screen/widgets/search_app_bar.dart';
+import 'package:firebase_chat/features/search/presentation/providers/search_provider.dart';
+import 'package:firebase_chat/features/theming/constants/styles.dart';
 import 'package:firebase_chat/features/theming/theme_calls.dart';
-import 'package:firebase_chat/init/user_info.dart';
+import 'package:firebase_chat/utils/providers_calls.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:provider/provider.dart';
 
-import '../../../../../fast_tools/widgets/custom_text_field.dart';
-import '../../../../home/presentation/widgets/home_screen_appbar.dart';
-import '../../../../theming/constants/sizes.dart';
-import '../../../../theming/constants/styles.dart';
+import 'widgets/search_result_item.dart';
 
 class SearchScreen extends StatefulWidget {
   static const String routeName = '/SearchScreen';
@@ -25,85 +26,49 @@ class _SearchScreenState extends State<SearchScreen> {
   TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    UserModel userModel = CUserInfo.instance.currentUser!;
+    var searchProvider = Providers.searchP(context);
 
     return ScreenWrapper(
-        backgroundColor: colorTheme.backGround,
-        body: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              snap: true,
-              stretch: true,
-              floating: true,
-              pinned: false,
-              automaticallyImplyLeading: false,
-              backgroundColor: colorTheme.backGround,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Align(
-                  alignment: Alignment.center,
-                  child: PreferredSize(
-                    preferredSize: Size.fromHeight(kToolbarHeight),
-                    child: Container(
-                      alignment: Alignment.bottomCenter,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Row(
-                            children: [
-                              BackButton(
-                                color: colorTheme.inActiveText,
-                              ),
-                              Expanded(
-                                child: CustomTextField(
-                                  title: 'Search...',
-                                  enabled: true,
-                                  controller: searchController,
-                                  onChange: (value) {},
-                                  autoFocus: true,
-                                  textInputType: TextInputType.text,
-                                  password: false,
-                                  handleShowPassword: () {},
-                                  obscureText: false,
-                                  color: Colors.red,
-                                  backgroundColor:
-                                      colorTheme.textFieldBackgroundColor,
-                                  borderColor: Colors.transparent,
-                                  textStyle: h4TextStyleInactive,
-                                  borderRadius:
-                                      BorderRadius.circular(mediumBorderRadius),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(width: double.infinity),
-                  VSpace(),
-                  VSpace(),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+      backgroundColor: colorTheme.backGround,
+      body: CustomScrollView(
+        slivers: [
+          SearchAppBar(searchController: searchController),
+          SliverToBoxAdapter(child: VSpace()),
+          searchProvider.searching
+              ? SliverToBoxAdapter(
+                  child: Column(
                     children: [
-                      SizedBox(width: double.infinity),
-                      ...List.generate(
-                        100,
-                        (index) => Text('data'),
+                      VSpace(),
+                      LoadingAnimationWidget.halfTriangleDot(
+                        color: colorTheme.cardBackgroundDark.withOpacity(.5),
+                        size: 100,
+                      ),
+                      VSpace(factor: .5),
+                      Text(
+                        'Searching...',
+                        style: h4TextStyleInactive,
                       ),
                     ],
                   ),
-                ],
-              ),
-            )
-          ],
-        ));
+                )
+              : searchProvider.results.isEmpty
+                  ? SliverToBoxAdapter(
+                      child: Center(
+                          child: Text(
+                        'No search results',
+                        style: h4TextStyleInactive,
+                      )),
+                    )
+                  : SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        childCount: searchProvider.results.length,
+                        (context, index) => SearchResultItem(
+                          model: searchProvider.results[index],
+                        ),
+                      ),
+                    )
+        ],
+      ),
+    );
   }
 }

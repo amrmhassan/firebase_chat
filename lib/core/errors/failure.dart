@@ -41,6 +41,6 @@ class ErrorMapper {
     } else if (failure is InsufficientGoogleInfoFailure) {
       return 'Insufficient info given';
     }
-    return 'Unknown error';
+    return 'Unknown error $Failure';
   }
 }

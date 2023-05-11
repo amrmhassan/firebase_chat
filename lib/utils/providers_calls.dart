@@ -1,3 +1,4 @@
+import 'package:firebase_chat/features/search/presentation/providers/search_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,5 +20,13 @@ class Providers {
 
   static EVerifyProvider emailVP(BuildContext context) {
     return Provider.of<EVerifyProvider>(context);
+  }
+
+  static SearchProvider searchPf(BuildContext context) {
+    return Provider.of<SearchProvider>(context, listen: false);
+  }
+
+  static SearchProvider searchP(BuildContext context) {
+    return Provider.of<SearchProvider>(context);
   }
 }

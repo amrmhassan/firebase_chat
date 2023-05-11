@@ -1,3 +1,3 @@
-import 'login_datasource.dart';
+import 'auth_datasource.dart';
 
 abstract class LocalDataSource implements AuthDatasource {}

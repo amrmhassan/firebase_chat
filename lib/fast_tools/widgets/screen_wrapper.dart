@@ -24,7 +24,6 @@ class ScreenWrapper extends StatelessWidget {
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
-          print('object');
         },
         child: body,
       ),

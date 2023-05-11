@@ -6,7 +6,7 @@ import 'package:firebase_chat/features/auth/domain/repositories/auth_repo.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/firebase_errors.dart';
-import '../datasourses/login_datasource.dart';
+import '../datasourses/auth_datasource.dart';
 import '../models/user_model.dart';
 
 abstract class AuthPiping implements AuthRepo {
