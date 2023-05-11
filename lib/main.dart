@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/core/hive/hive_initiator.dart';
 import 'package:firebase_chat/init/firebase_init.dart';
 import 'package:firebase_chat/init/providers_init.dart';

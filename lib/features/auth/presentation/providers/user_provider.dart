@@ -1,14 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/core/errors/failure.dart';
-import 'package:firebase_chat/core/hive/hive_helper.dart';
 import 'package:firebase_chat/features/auth/data/datasourses/auth_inputs_datasource.dart';
 import 'package:firebase_chat/features/auth/data/models/user_model.dart';
 import 'package:firebase_chat/features/auth/data/repositories/signin_impl.dart';
 import 'package:firebase_chat/features/auth/data/repositories/signup_impl.dart';
 import 'package:firebase_chat/features/auth/domain/repositories/login_failures.dart';
 import 'package:firebase_chat/features/auth/data/piping/auth_piping.dart';
-import 'package:firebase_chat/init/runtime_variables.dart';
 import 'package:firebase_chat/init/user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';

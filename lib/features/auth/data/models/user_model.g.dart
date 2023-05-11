@@ -23,13 +23,15 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       accessToken: fields[3] as String?,
       provider: fields[4] as String,
       providerId: fields[5] as String?,
+      gender: fields[6] as Gender?,
+      mobileNumbers: (fields[7] as List).cast<String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, UserModel obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.uid)
       ..writeByte(1)
@@ -41,7 +43,11 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(4)
       ..write(obj.provider)
       ..writeByte(5)
-      ..write(obj.providerId);
+      ..write(obj.providerId)
+      ..writeByte(6)
+      ..write(obj.gender)
+      ..writeByte(7)
+      ..write(obj.mobileNumbers);
   }
 
   @override
@@ -51,6 +57,45 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is UserModelAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class GenderAdapter extends TypeAdapter<Gender> {
+  @override
+  final int typeId = 1;
+
+  @override
+  Gender read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return Gender.male;
+      case 1:
+        return Gender.female;
+      default:
+        return Gender.male;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, Gender obj) {
+    switch (obj) {
+      case Gender.male:
+        writer.writeByte(0);
+        break;
+      case Gender.female:
+        writer.writeByte(1);
+        break;
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is GenderAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

@@ -7,6 +7,10 @@ class ModelsFields {
   static const String accessToken = 'accessToken';
   static const String provider = 'provider';
   static const String providerId = 'providerId';
+  static const String gender = 'gender';
+  static const String mobileNumbers = 'mobileNumbers';
+  static const String location = 'location';
+  static const String coordinates = 'coordinates';
 
   // temp mail model
   static const String autocorrect = 'autocorrect';

@@ -96,4 +96,13 @@ class GlobalUtils {
       return '';
     }
   }
+
+  static T? stringToEnum<T>(String value, List<T> enumValues) {
+    for (var enumValue in enumValues) {
+      if (enumValue.toString().split('.').last == value) {
+        return enumValue;
+      }
+    }
+    return null;
+  }
 }

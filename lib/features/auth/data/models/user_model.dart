@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/core/constants/sign_provider.dart';
+import 'package:firebase_chat/features/location/data/models/location_model.dart';
 import 'package:firebase_chat/transformers/models_fields.dart';
+import 'package:firebase_chat/utils/global_utils.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../../transformers/facebook_photo.dart';
@@ -21,6 +23,12 @@ class UserModel {
   final String provider;
   @HiveField(5)
   final String? providerId;
+  @HiveField(6)
+  final Gender? gender;
+  @HiveField(7)
+  final List<String> mobileNumbers;
+  // @HiveField(8)
+  // final List<LocationModel> locations;
 
   const UserModel({
     required this.email,
@@ -29,9 +37,13 @@ class UserModel {
     required this.accessToken,
     required this.provider,
     required this.providerId,
+    this.gender,
+    // this.locations = const [],
+    this.mobileNumbers = const [],
   });
 
   static UserModel fromJSON(Map<String, dynamic> obj) {
+    var g = GlobalUtils.stringToEnum(obj[ModelsFields.gender], Gender.values);
     return UserModel(
       email: obj[ModelsFields.email],
       name: obj[ModelsFields.name],
@@ -39,6 +51,8 @@ class UserModel {
       accessToken: obj[ModelsFields.accessToken],
       provider: obj[ModelsFields.provider],
       providerId: obj[ModelsFields.providerId],
+      gender: g,
+      mobileNumbers: obj[ModelsFields.mobileNumbers],
     );
   }
 
@@ -50,6 +64,7 @@ class UserModel {
       ModelsFields.accessToken: accessToken,
       ModelsFields.provider: provider,
       ModelsFields.providerId: providerId,
+      ModelsFields.gender: gender?.name,
     };
   }
 
@@ -65,4 +80,13 @@ class UserModel {
     }
     return null;
   }
+}
+
+//? user gender
+@HiveType(typeId: 1)
+enum Gender {
+  @HiveField(0)
+  male,
+  @HiveField(1)
+  female,
 }

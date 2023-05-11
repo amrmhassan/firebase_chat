@@ -11,6 +11,8 @@ abstract class _$ColorThemeCWProxy {
 
   ColorTheme cardBackground(Color cardBackground);
 
+  ColorTheme cardBackgroundDark(Color cardBackgroundDark);
+
   ColorTheme lightCardBackground(Color lightCardBackground);
 
   ColorTheme kInactiveColor(Color kInactiveColor);
@@ -38,6 +40,7 @@ abstract class _$ColorThemeCWProxy {
   ColorTheme call({
     Color? backGround,
     Color? cardBackground,
+    Color? cardBackgroundDark,
     Color? lightCardBackground,
     Color? kInactiveColor,
     Color? kBlueColor,
@@ -62,6 +65,10 @@ class _$ColorThemeCWProxyImpl implements _$ColorThemeCWProxy {
   @override
   ColorTheme cardBackground(Color cardBackground) =>
       this(cardBackground: cardBackground);
+
+  @override
+  ColorTheme cardBackgroundDark(Color cardBackgroundDark) =>
+      this(cardBackgroundDark: cardBackgroundDark);
 
   @override
   ColorTheme lightCardBackground(Color lightCardBackground) =>
@@ -107,6 +114,7 @@ class _$ColorThemeCWProxyImpl implements _$ColorThemeCWProxy {
   ColorTheme call({
     Object? backGround = const $CopyWithPlaceholder(),
     Object? cardBackground = const $CopyWithPlaceholder(),
+    Object? cardBackgroundDark = const $CopyWithPlaceholder(),
     Object? lightCardBackground = const $CopyWithPlaceholder(),
     Object? kInactiveColor = const $CopyWithPlaceholder(),
     Object? kBlueColor = const $CopyWithPlaceholder(),
@@ -128,6 +136,11 @@ class _$ColorThemeCWProxyImpl implements _$ColorThemeCWProxy {
           ? _value.cardBackground
           // ignore: cast_nullable_to_non_nullable
           : cardBackground as Color,
+      cardBackgroundDark: cardBackgroundDark == const $CopyWithPlaceholder() ||
+              cardBackgroundDark == null
+          ? _value.cardBackgroundDark
+          // ignore: cast_nullable_to_non_nullable
+          : cardBackgroundDark as Color,
       lightCardBackground:
           lightCardBackground == const $CopyWithPlaceholder() ||
                   lightCardBackground == null
