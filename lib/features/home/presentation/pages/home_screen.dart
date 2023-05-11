@@ -132,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void checkUserInitData() async {
     Future.delayed(Duration.zero).then((value) async {
-      await Providers.userPf(context).loadCurrentUserInfo();
+      // await Providers.userPf(context).loadCurrentUserInfo();
       try {
         User? currentUser = FirebaseAuth.instance.currentUser;
         if (currentUser == null) {

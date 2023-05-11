@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/core/hive/hive_initiator.dart';
 import 'package:firebase_chat/init/firebase_init.dart';
 import 'package:firebase_chat/init/providers_init.dart';
 import 'package:firebase_chat/init/screens_init.dart';
 import 'package:firebase_chat/init/theme_init.dart';
+import 'package:firebase_chat/init/user_info.dart';
 import 'package:firebase_chat/init/user_initiators.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +20,7 @@ void main() async {
   await FirebaseInit.init();
   await UserInit.reloadUser();
   await HiveInitiator().setup();
+  await CUserInfo.initUser();
   runApp(const MyApp());
 }
 

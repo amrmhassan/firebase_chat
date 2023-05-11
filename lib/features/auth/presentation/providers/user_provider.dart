@@ -9,6 +9,7 @@ import 'package:firebase_chat/features/auth/data/repositories/signup_impl.dart';
 import 'package:firebase_chat/features/auth/domain/repositories/login_failures.dart';
 import 'package:firebase_chat/features/auth/data/piping/auth_piping.dart';
 import 'package:firebase_chat/init/runtime_variables.dart';
+import 'package:firebase_chat/init/user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -65,7 +66,8 @@ class UserProvider extends ChangeNotifier {
     if (data is UserModel) {
       userModel = data;
       notifyListeners();
-      await _saveCurrentUserInfo(userModel!);
+      // await _saveCurrentUserInfo(userModel!);
+      await CUserInfo.saveCurrentUserInfo(userModel!);
     }
 
     return res;
@@ -146,29 +148,30 @@ class UserProvider extends ChangeNotifier {
     await FacebookAuth.instance.logOut();
 
     // delete saved user data
-    await _deleteCurrentUserInfo();
+    // await _deleteCurrentUserInfo();
+    await CUserInfo.deleteCurrentUserInfo();
   }
 
   //# saved user info related methods
-  Future<void> _saveCurrentUserInfo(UserModel userModel) async {
-    var box = await HiveBox.currentUser;
-    await box.put(userModel.uid, userModel);
-  }
+  // Future<void> _saveCurrentUserInfo(UserModel userModel) async {
+  //   var box = await HiveBox.currentUser;
+  //   await box.put(userModel.uid, userModel);
+  // }
 
-  Future<void> _deleteCurrentUserInfo() async {
-    var box = await HiveBox.currentUser;
-    await box.clear();
-  }
+  // Future<void> _deleteCurrentUserInfo() async {
+  //   var box = await HiveBox.currentUser;
+  //   await box.clear();
+  // }
 
-  Future<void> loadCurrentUserInfo() async {
-    try {
-      var box = await HiveBox.currentUser;
-      if (box.values.isEmpty) return;
-      var data = box.values.first as UserModel;
-      userModel = data;
-      notifyListeners();
-    } catch (e) {
-      logger.e(e);
-    }
-  }
+  // Future<void> loadCurrentUserInfo() async {
+  //   try {
+  //     var box = await HiveBox.currentUser;
+  //     if (box.values.isEmpty) return;
+  //     var data = box.values.first as UserModel;
+  //     userModel = data;
+  //     notifyListeners();
+  //   } catch (e) {
+  //     logger.e(e);
+  //   }
+  // }
 }
