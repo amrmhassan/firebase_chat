@@ -1,5 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// ignore_for_file: unused_element
+
 part of 'user_model.dart';
 
 // **************************************************************************
@@ -99,3 +101,37 @@ class GenderAdapter extends TypeAdapter<Gender> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
+      email: json['email'] as String,
+      name: json['name'] as String,
+      uid: json['uid'] as String,
+      accessToken: json['accessToken'] as String?,
+      provider: json['provider'] as String,
+      providerId: json['providerId'] as String?,
+      gender: $enumDecodeNullable(_$GenderEnumMap, json['gender']),
+      mobileNumbers: (json['mobileNumbers'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+    );
+
+Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
+      'uid': instance.uid,
+      'email': instance.email,
+      'name': instance.name,
+      'accessToken': instance.accessToken,
+      'provider': instance.provider,
+      'providerId': instance.providerId,
+      'gender': _$GenderEnumMap[instance.gender],
+      'mobileNumbers': instance.mobileNumbers,
+    };
+
+const _$GenderEnumMap = {
+  Gender.male: 'male',
+  Gender.female: 'female',
+};

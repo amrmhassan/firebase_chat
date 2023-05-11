@@ -1,5 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// ignore_for_file: unused_element
+
 part of 'location_model.dart';
 
 // **************************************************************************
@@ -42,3 +44,19 @@ class LocationModelAdapter extends TypeAdapter<LocationModel> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+LocationModel _$LocationModelFromJson(Map<String, dynamic> json) =>
+    LocationModel(
+      location: json['location'] as String,
+      latLng: json['latLng'] as String,
+    );
+
+Map<String, dynamic> _$LocationModelToJson(LocationModel instance) =>
+    <String, dynamic>{
+      'location': instance.location,
+      'latLng': instance.latLng,
+    };

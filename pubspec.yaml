@@ -11,7 +11,7 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   firebase_core: ^2.10.0
-  cloud_firestore: ^4.5.2
+  cloud_firestore: ^4.6.0
   firebase_database: ^10.1.1
   firebase_auth: ^4.4.2
   google_sign_in: ^6.1.0
@@ -30,6 +30,7 @@ dependencies:
   geolocator: ^9.0.2
   geocoding: ^2.1.0
   google_maps_flutter: ^2.2.6
+  json_annotation: ^4.8.1
 
 
 dev_dependencies:
@@ -38,6 +39,7 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   hive_generator: ^2.0.0
   build_runner: ^2.3.3
+  json_serializable: ^6.6.2
 
 flutter:
   uses-material-design: true

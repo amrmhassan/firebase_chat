@@ -11,6 +11,7 @@ import 'package:firebase_chat/features/auth/data/models/user_model.dart';
 import 'package:firebase_chat/features/auth/presentation/pages/login_screen.dart';
 import 'package:firebase_chat/features/theming/constants/styles.dart';
 import 'package:firebase_chat/features/theming/theme_calls.dart';
+import 'package:firebase_chat/init/user_info.dart';
 import 'package:firebase_chat/utils/global_utils.dart';
 import 'package:firebase_chat/utils/providers_calls.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    UserModel? userModel = Providers.userP(context).userModel;
+    UserModel? userModel = CUserInfo.currentUser;
     if (userModel == null) return SizedBox();
 
     return Scaffold(

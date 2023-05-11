@@ -5,6 +5,7 @@ import 'package:firebase_chat/features/auth/data/datasourses/auth_inputs_datasou
 import 'package:firebase_chat/features/auth/data/models/user_model.dart';
 import 'package:firebase_chat/features/auth/data/repositories/signin_impl.dart';
 import 'package:firebase_chat/features/auth/data/repositories/signup_impl.dart';
+import 'package:firebase_chat/features/auth/data/repositories/user_mixin.dart';
 import 'package:firebase_chat/features/auth/domain/repositories/login_failures.dart';
 import 'package:firebase_chat/features/auth/data/piping/auth_piping.dart';
 import 'package:firebase_chat/init/user_info.dart';
@@ -22,14 +23,13 @@ enum AuthType {
   emailLogin,
 }
 
-class UserProvider extends ChangeNotifier {
+class UserProvider extends ChangeNotifier with UserMixin {
   late AuthInputsDatasource authInputsDS;
   UserProvider() {
     authInputsDS = AuthInputsDatasource(notifyListeners);
   }
 
   bool loggingIn = false;
-  UserModel? userModel;
 
   // i should have a function here that accepts an Auth  class
   // auth(AuthProvider) this auth provider might be loginRepo class or signUpRepo class
@@ -62,10 +62,9 @@ class UserProvider extends ChangeNotifier {
 
     var data = res.fold((l) => l, (r) => r);
     if (data is UserModel) {
-      userModel = data;
       notifyListeners();
-      // await _saveCurrentUserInfo(userModel!);
-      await CUserInfo.saveCurrentUserInfo(userModel!);
+      await saveUserToDb(data);
+      await CUserInfo.saveCurrentUserInfo(data);
     }
 
     return res;

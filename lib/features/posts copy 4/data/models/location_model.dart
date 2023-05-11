@@ -1,8 +1,9 @@
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'location_model.g.dart';
 
+@JsonSerializable()
 @HiveType(typeId: 2)
 class LocationModel {
   @HiveField(0)
@@ -14,4 +15,7 @@ class LocationModel {
     required this.location,
     required this.latLng,
   });
+  factory LocationModel.fromJson(Map<String, dynamic> json) =>
+      _$LocationModelFromJson(json);
+  Map<String, dynamic> toJson() => _$LocationModelToJson(this);
 }
