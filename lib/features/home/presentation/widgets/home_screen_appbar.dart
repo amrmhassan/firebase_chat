@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously, prefer_const_literals_to_create_immutables
 
+import 'package:firebase_chat/core/navigation.dart';
 import 'package:firebase_chat/fast_tools/widgets/button_wrapper.dart';
 import 'package:firebase_chat/fast_tools/widgets/h_space.dart';
 import 'package:firebase_chat/fast_tools/widgets/v_line.dart';
 import 'package:firebase_chat/features/auth/data/models/user_model.dart';
+import 'package:firebase_chat/features/search/presentation/pages/search_screen/search_screen.dart';
 import 'package:firebase_chat/features/theming/constants/sizes.dart';
 import 'package:firebase_chat/features/theming/constants/styles.dart';
 import 'package:firebase_chat/features/theming/theme_calls.dart';
@@ -73,7 +75,11 @@ class HomeScreenAppBarActionInvite extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ButtonWrapper(
-              onTap: userLoaded ? () {} : null,
+              onTap: userLoaded
+                  ? () {
+                      CNav.pushNamed(context, SearchScreen.routeName);
+                    }
+                  : null,
               padding: EdgeInsets.symmetric(
                 horizontal: kHPad / 2,
                 vertical: kVPad / 2,

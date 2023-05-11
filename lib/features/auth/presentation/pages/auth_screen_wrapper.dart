@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_chat/fast_tools/widgets/screen_wrapper.dart';
 import 'package:firebase_chat/features/auth/presentation/pages/widgets/login_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,10 +20,8 @@ class AuthScreenWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
+    return ScreenWrapper(
       backgroundColor: colorTheme.backGround,
-      extendBodyBehindAppBar: true,
       appBar: loginAppBar(login),
       body: Stack(
         children: [

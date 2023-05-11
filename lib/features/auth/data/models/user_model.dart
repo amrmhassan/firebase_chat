@@ -4,7 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../../transformers/facebook_photo.dart';
-import '../../../posts copy 4/data/models/location_model.dart';
+import '../../../location/data/models/location_model.dart';
 
 part 'user_model.g.dart';
 

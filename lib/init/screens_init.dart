@@ -7,6 +7,7 @@ import '../features/auth/presentation/pages/login_screen.dart';
 import '../features/auth/presentation/pages/signup_screen.dart';
 import '../features/email_verification/presentation/pages/email_verification_screen.dart';
 import '../features/home/presentation/pages/home_screen.dart';
+import '../features/search/presentation/pages/search_screen/search_screen.dart';
 import '../screens/loading_screen.dart';
 
 class ScreensInit {
@@ -15,6 +16,7 @@ class ScreensInit {
     SignUpScreen.routeName: (ctx) => SignUpScreen(),
     HomeScreen.routeName: (ctx) => HomeScreen(),
     EmailVerificationScreen.routeName: (ctx) => EmailVerificationScreen(),
+    SearchScreen.routeName: (ctx) => SearchScreen(),
   };
 
   static Widget? home = StreamBuilder(

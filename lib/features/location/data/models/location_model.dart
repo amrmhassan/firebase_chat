@@ -15,6 +15,7 @@ class LocationModel {
     required this.location,
     required this.latLng,
   });
+
   factory LocationModel.fromJson(Map<String, dynamic> json) =>
       _$LocationModelFromJson(json);
   Map<String, dynamic> toJson() => _$LocationModelToJson(this);
