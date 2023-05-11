@@ -2,21 +2,18 @@
 
 import 'dart:async';
 
+import 'package:advanced_shadows/advanced_shadows.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/core/types.dart';
-import 'package:firebase_chat/fast_tools/widgets/padding_wrapper.dart';
+import 'package:firebase_chat/fast_tools/helpers/responsive.dart';
 import 'package:firebase_chat/fast_tools/widgets/v_space.dart';
 import 'package:firebase_chat/features/auth/data/models/user_model.dart';
 import 'package:firebase_chat/features/auth/presentation/pages/login_screen.dart';
-import 'package:firebase_chat/features/theming/constants/sizes.dart';
 import 'package:firebase_chat/features/theming/constants/styles.dart';
 import 'package:firebase_chat/features/theming/theme_calls.dart';
-import 'package:firebase_chat/transformers/collections.dart';
 import 'package:firebase_chat/utils/global_utils.dart';
 import 'package:firebase_chat/utils/providers_calls.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-
 import '../widgets/home_screen_appbar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -38,18 +35,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // User user = FirebaseAuth.instance.currentUser!;
-    // SignProvider? signProvider =
-    //     SignProvidersGet.get(user.providerData.first.providerId);
-    // bool verified = signProvider != SignProvider.email || user.emailVerified;
     UserModel? userModel = Providers.userP(context).userModel;
     if (userModel == null) return SizedBox();
 
     return Scaffold(
+      backgroundColor: colorTheme.backGround,
       appBar: AppBar(
         title: HomeScreenAppBarTitle(userModel: userModel),
         actions: [
-          HomeScreenAppBarActionSearch(userLoaded: userLoaded),
+          HomeScreenAppBarActionInvite(userLoaded: userLoaded),
         ],
       ),
       body: userLoaded
@@ -58,82 +52,74 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 SizedBox(width: double.infinity),
                 VSpace(),
-                PaddingWrapper(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: kHPad,
-                      vertical: kVPad,
-                    ),
-                    width: double.infinity,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      color: colorTheme.cardBackgroundDark,
-                      borderRadius: BorderRadius.circular(largeBorderRadius),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          userModel.email,
-                          style: h3LightTextStyle,
-                          overflow: TextOverflow.ellipsis,
-                        )
-                      ],
-                    ),
+                VSpace(),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(width: double.infinity),
+                      // AdvancedShadow(
+                      //   innerShadows: [
+                      //     BoxShadow(
+                      //       color:
+                      //           colorTheme.cardBackgroundDark.withOpacity(.3),
+                      //       blurRadius:
+                      //           Responsive.getWidthPercentage(context, .6) / 3,
+                      //     ),
+                      //   ],
+                      //   outerShadows: [
+                      //     BoxShadow(
+                      //       color:
+                      //           colorTheme.cardBackgroundDark.withOpacity(.3),
+                      //       blurRadius: 20,
+                      //     ),
+                      //   ],
+                      //   child: Container(
+                      //     width: 100,
+                      //     height: 100,
+                      //     decoration: BoxDecoration(
+                      //       color: colorTheme.backGround,
+                      //       borderRadius: BorderRadius.circular(1000),
+                      //     ),
+                      //   ),
+                      // ),
+
+                      AdvancedShadow(
+                        innerShadows: innerShadows,
+                        outerShadows: outerShadows,
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: Responsive.getWidthPercentage(context, .6),
+                          height: Responsive.getWidthPercentage(context, .6),
+                          decoration: BoxDecoration(
+                            color: colorTheme.backGround,
+                            borderRadius: BorderRadius.circular(1000),
+                          ),
+                          child: Ink(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(1000),
+                            ),
+                            child: InkWell(
+                              onTap: () {},
+                              splashColor: Colors.grey,
+                              borderRadius: BorderRadius.circular(1000),
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Chat',
+                                  style: h1TextStyle.copyWith(
+                                    color: colorTheme.activeText,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () async {
-                    var ref = FirebaseDatabase.instance
-                        .ref(
-                          DBCollections.getRef(
-                            [
-                              DBCollections.users,
-                              userModel.uid,
-                              DBCollections.rooms,
-                            ],
-                          ),
-                        )
-                        .push();
-                    await ref.set({
-                      'name': 'This is my name',
-                    });
-                  },
-                  child: Text('Create Chat'),
-                ),
-                StreamBuilder(
-                  stream: FirebaseDatabase.instance
-                      .ref(
-                        DBCollections.getRef(
-                          [
-                            DBCollections.users,
-                            userModel.uid,
-                            DBCollections.rooms,
-                          ],
-                        ),
-                      )
-                      .limitToLast(1)
-                      .onValue,
-                  builder: (context, snapshot) {
-                    var data = snapshot.data!.snapshot.value;
-                    if (snapshot.hasData &&
-                        snapshot.data != null &&
-                        data != null) {
-                      var rooms = (data as Map).cast();
-
-                      return Expanded(
-                          child: ListView(
-                        children: rooms.entries
-                            .map(
-                              (e) => Text(e.key),
-                            )
-                            .toList(),
-                      ));
-                    }
-                    return SizedBox();
-                  },
-                ),
-                VSpace(),
               ],
             )
           : Center(
@@ -165,4 +151,33 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
   }
+
+  List<BoxShadow> innerShadows = [
+    BoxShadow(
+      color: colorTheme.kBlueColor.withOpacity(.6),
+      blurRadius: 20,
+    ),
+    BoxShadow(
+      color: Colors.white.withOpacity(.9),
+      blurRadius: 15,
+    ),
+    BoxShadow(
+      color: Colors.blue.withOpacity(.3),
+      blurRadius: 5,
+    ),
+  ];
+  List<BoxShadow> get outerShadows => [
+        BoxShadow(
+          color: colorTheme.kBlueColor.withOpacity(.6),
+          blurRadius: 5,
+        ),
+        BoxShadow(
+          color: Colors.white.withOpacity(.9),
+          blurRadius: 3,
+        ),
+        BoxShadow(
+          color: Colors.blue.withOpacity(.3),
+          blurRadius: 2,
+        ),
+      ];
 }

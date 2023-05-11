@@ -25,6 +25,8 @@ dependencies:
   dartz: ^0.10.1
   http: ^0.13.5
   shared_preferences: ^2.1.0
+  advanced_shadows: ^0.0.1
+  flex_color_scheme: ^7.0.4
 
 
 dev_dependencies:

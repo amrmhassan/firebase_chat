@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+  advanced_shadows:
+    dependency: "direct main"
+    description:
+      name: advanced_shadows
+      sha256: "2af73fe0ec3e7ec75afe50cf6ed88610b4bbe2f0686de2bdc26bbc60640b3e0f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   analyzer:
     dependency: transitive
     description:
@@ -345,6 +353,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  flex_color_scheme:
+    dependency: "direct main"
+    description:
+      name: flex_color_scheme
+      sha256: "1a54a5b22a4a7c4e5c30a8cabb12a8cf3c3f477c15e1ab2e1ab2f569295f4fab"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.4"
+  flex_seed_scheme:
+    dependency: transitive
+    description:
+      name: flex_seed_scheme
+      sha256: b3678d82403c13dec2ee2721e078b26f14577712411b6aa981b0f4269df3fabb
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.4"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -1055,4 +1079,4 @@ packages:
     version: "3.1.1"
 sdks:
   dart: ">=2.19.6 <3.0.0"
-  flutter: ">=3.7.0-0"
+  flutter: ">=3.7.0"

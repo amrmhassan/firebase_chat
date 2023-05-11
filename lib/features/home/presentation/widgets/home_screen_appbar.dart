@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously, prefer_const_literals_to_create_immutables
 
+import 'package:firebase_chat/fast_tools/widgets/button_wrapper.dart';
 import 'package:firebase_chat/fast_tools/widgets/h_space.dart';
 import 'package:firebase_chat/fast_tools/widgets/v_line.dart';
 import 'package:firebase_chat/features/auth/data/models/user_model.dart';
@@ -25,6 +26,7 @@ class HomeScreenAppBarActionSearch extends StatelessWidget {
           thickness: 1,
           heightFactor: .5,
         ),
+        HSpace(factor: .5),
         userLoaded
             ? IconButton(
                 onPressed: () async {
@@ -45,6 +47,79 @@ class HomeScreenAppBarActionSearch extends StatelessWidget {
                   ),
                 ),
               ),
+        HSpace(factor: .5),
+      ],
+    );
+  }
+}
+
+class HomeScreenAppBarActionInvite extends StatelessWidget {
+  const HomeScreenAppBarActionInvite({
+    super.key,
+    required this.userLoaded,
+  });
+
+  final bool userLoaded;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        VLine(
+          color: colorTheme.kInactiveColor,
+          thickness: 1,
+          heightFactor: .5,
+        ),
+        HSpace(factor: .5),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ButtonWrapper(
+              onTap: userLoaded ? () {} : null,
+              padding: EdgeInsets.symmetric(
+                horizontal: kHPad / 2,
+                vertical: kVPad / 2,
+              ),
+              borderRadius: 1000,
+              backgroundColor: colorTheme.cardBackground,
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.add,
+                    size: smallIconSize,
+                    color: colorTheme.activeText,
+                  ),
+                  Text(
+                    'Invite',
+                    style: h4TextStyleInactive.copyWith(
+                      color: colorTheme.activeText,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        // userLoaded
+        //     ? IconButton(
+        //         onPressed: () async {
+        //           // await Providers.userPf(context).logout();
+        //           // Navigator.pop(context);
+        //         },
+        //         icon: Icon(
+        //           Icons.search,
+        //         ),
+        //       )
+        //     : IconButton(
+        //         onPressed: () {},
+        //         icon: SizedBox(
+        //           height: mediumIconSize,
+        //           width: mediumIconSize,
+        //           child: CircularProgressIndicator(
+        //             strokeWidth: 1.4,
+        //           ),
+        //         ),
+        //       ),
         HSpace(factor: .5),
       ],
     );
