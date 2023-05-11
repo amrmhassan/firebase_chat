@@ -12,7 +12,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_core: ^2.10.0
   cloud_firestore: ^4.6.0
-  firebase_database: ^10.1.1
+  firebase_database: ^10.1.2
   firebase_auth: ^4.4.2
   google_sign_in: ^6.1.0
   flutter_facebook_auth: ^5.0.8
@@ -31,6 +31,7 @@ dependencies:
   geocoding: ^2.1.0
   google_maps_flutter: ^2.2.6
   json_annotation: ^4.8.1
+  firebase_storage: ^11.1.2
 
 
 dev_dependencies:
