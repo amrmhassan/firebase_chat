@@ -29,8 +29,10 @@ class UserModel {
   final List<String> mobileNumbers;
   @HiveField(8)
   final List<LocationModel> locations;
+  @HiveField(9)
+  bool emailVerified;
 
-  const UserModel({
+  UserModel({
     required this.email,
     required this.name,
     required this.uid,
@@ -40,6 +42,7 @@ class UserModel {
     this.gender,
     this.locations = const [],
     this.mobileNumbers = const [],
+    this.emailVerified = false,
   });
 
   // static UserModel fromJSON(Map<String, dynamic> obj) {

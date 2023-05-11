@@ -1,7 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: unused_element
-
 part of 'user_model.dart';
 
 // **************************************************************************
@@ -26,14 +24,16 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       provider: fields[4] as String,
       providerId: fields[5] as String?,
       gender: fields[6] as Gender?,
+      locations: (fields[8] as List).cast<LocationModel>(),
       mobileNumbers: (fields[7] as List).cast<String>(),
+      emailVerified: fields[9] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserModel obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.uid)
       ..writeByte(1)
@@ -49,7 +49,11 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(6)
       ..write(obj.gender)
       ..writeByte(7)
-      ..write(obj.mobileNumbers);
+      ..write(obj.mobileNumbers)
+      ..writeByte(8)
+      ..write(obj.locations)
+      ..writeByte(9)
+      ..write(obj.emailVerified);
   }
 
   @override
@@ -114,10 +118,15 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       provider: json['provider'] as String,
       providerId: json['providerId'] as String?,
       gender: $enumDecodeNullable(_$GenderEnumMap, json['gender']),
+      locations: (json['locations'] as List<dynamic>?)
+              ?.map((e) => LocationModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
       mobileNumbers: (json['mobileNumbers'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],
+      emailVerified: json['emailVerified'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -129,6 +138,8 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'providerId': instance.providerId,
       'gender': _$GenderEnumMap[instance.gender],
       'mobileNumbers': instance.mobileNumbers,
+      'locations': instance.locations,
+      'emailVerified': instance.emailVerified,
     };
 
 const _$GenderEnumMap = {

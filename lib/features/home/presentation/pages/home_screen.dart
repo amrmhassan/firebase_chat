@@ -13,7 +13,6 @@ import 'package:firebase_chat/features/theming/constants/styles.dart';
 import 'package:firebase_chat/features/theming/theme_calls.dart';
 import 'package:firebase_chat/init/user_info.dart';
 import 'package:firebase_chat/utils/global_utils.dart';
-import 'package:firebase_chat/utils/providers_calls.dart';
 import 'package:flutter/material.dart';
 import '../widgets/home_screen_appbar.dart';
 
@@ -36,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    UserModel? userModel = CUserInfo.currentUser;
+    UserModel? userModel = CUserInfo.instance.currentUser;
     if (userModel == null) return SizedBox();
 
     return Scaffold(

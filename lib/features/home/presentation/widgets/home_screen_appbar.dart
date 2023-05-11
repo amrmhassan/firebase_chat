@@ -7,6 +7,7 @@ import 'package:firebase_chat/features/auth/data/models/user_model.dart';
 import 'package:firebase_chat/features/theming/constants/sizes.dart';
 import 'package:firebase_chat/features/theming/constants/styles.dart';
 import 'package:firebase_chat/features/theming/theme_calls.dart';
+import 'package:firebase_chat/utils/providers_calls.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreenAppBarActionSearch extends StatelessWidget {
@@ -29,10 +30,7 @@ class HomeScreenAppBarActionSearch extends StatelessWidget {
         HSpace(factor: .5),
         userLoaded
             ? IconButton(
-                onPressed: () async {
-                  // await Providers.userPf(context).logout();
-                  // Navigator.pop(context);
-                },
+                onPressed: () async {},
                 icon: Icon(
                   Icons.search,
                 ),
@@ -100,26 +98,6 @@ class HomeScreenAppBarActionInvite extends StatelessWidget {
             ),
           ],
         ),
-        // userLoaded
-        //     ? IconButton(
-        //         onPressed: () async {
-        //           // await Providers.userPf(context).logout();
-        //           // Navigator.pop(context);
-        //         },
-        //         icon: Icon(
-        //           Icons.search,
-        //         ),
-        //       )
-        //     : IconButton(
-        //         onPressed: () {},
-        //         icon: SizedBox(
-        //           height: mediumIconSize,
-        //           width: mediumIconSize,
-        //           child: CircularProgressIndicator(
-        //             strokeWidth: 1.4,
-        //           ),
-        //         ),
-        //       ),
         HSpace(factor: .5),
       ],
     );
@@ -144,7 +122,10 @@ class HomeScreenAppBarTitle extends StatelessWidget {
               if (snapshot.data == null) {
                 return SizedBox();
               }
-              return Container(
+              return ButtonWrapper(
+                onTap: () {
+                  Providers.userPf(context).logout();
+                },
                 clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(1000),
@@ -166,11 +147,10 @@ class HomeScreenAppBarTitle extends StatelessWidget {
                 userModel.name,
                 style: h3TextStyle,
               ),
-              // Text(
-              //   userModel.email,
-              //   style: h4TextStyleInactive,
-              //   overflow: TextOverflow.ellipsis,
-              // ),
+              Text(
+                userModel.email,
+                style: h5InactiveTextStyle,
+              ),
             ],
           ),
         ),

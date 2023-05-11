@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_chat/init/user_info.dart';
 import 'package:flutter/material.dart';
 
 import '../core/constants/sign_provider.dart';
@@ -19,16 +20,12 @@ class ScreensInit {
   };
 
   static Widget? home = StreamBuilder(
-    stream: FirebaseAuth.instance.userChanges(),
+    stream: CUserInfo.instance.userChanges,
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return LoadingScreen();
       } else if (snapshot.data != null) {
-        User user = FirebaseAuth.instance.currentUser!;
-        SignProvider? signProvider =
-            SignProvidersGet.get(user.providerData.first.providerId);
-        bool verified =
-            signProvider != SignProvider.email || user.emailVerified;
+        bool verified = snapshot.data!.emailVerified;
 
         if (verified) {
           return HomeScreen();

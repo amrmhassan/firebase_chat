@@ -19,7 +19,7 @@ void main() async {
   await FirebaseInit.init();
   await UserInit.reloadUser();
   await HiveInitiator().setup();
-  await CUserInfo.initUser();
+  await CUserInfo.instance.initUser();
   runApp(const MyApp());
 }
 

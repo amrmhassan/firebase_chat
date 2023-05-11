@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../../../core/constants/sign_provider.dart';
 import '../../data/datasourses/remote_datasource.dart';
 import '../../data/repositories/validation_impl.dart';
 
@@ -62,9 +63,15 @@ class UserProvider extends ChangeNotifier with UserMixin {
 
     var data = res.fold((l) => l, (r) => r);
     if (data is UserModel) {
-      notifyListeners();
+      User user = FirebaseAuth.instance.currentUser!;
+      SignProvider? signProvider =
+          SignProvidersGet.get(user.providerData.first.providerId);
+      bool verified = signProvider != SignProvider.email || user.emailVerified;
+      data.emailVerified = verified;
       await saveUserToDb(data);
-      await CUserInfo.saveCurrentUserInfo(data);
+      await CUserInfo.instance.saveCurrentUserInfo(data);
+      await CUserInfo.instance.initUser();
+      notifyListeners();
     }
 
     return res;
@@ -146,7 +153,7 @@ class UserProvider extends ChangeNotifier with UserMixin {
 
     // delete saved user data
     // await _deleteCurrentUserInfo();
-    await CUserInfo.deleteCurrentUserInfo();
+    await CUserInfo.instance.deleteCurrentUserInfo();
   }
 
   //# saved user info related methods
